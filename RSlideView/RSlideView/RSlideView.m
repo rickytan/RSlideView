@@ -18,6 +18,8 @@ static const NSInteger kSubviewInvalidTagOffset = -1;
 @synthesize delegate = _delegate;
 @synthesize dataSource = _dataSource;
 @synthesize loopSlide = _loopSlide,continuousScroll = _continuousScroll,pageControlHidden = _pageControlHidden;
+@synthesize pageSize = _pageSize;
+@synthesize pageMargin = _pageMargin;
 
 - (void)dealloc
 {
@@ -49,12 +51,17 @@ static const NSInteger kSubviewInvalidTagOffset = -1;
         _totalPages = 0;
         _currentPage = 0;
         
+        _pageMargin = 0.f;
+        _pageSize = frame.size;
+        _scrollWidth = _pageMargin + _pageSize.width;
+        
         UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressGestureHandler:)];
         longPress.numberOfTouchesRequired = 1;
-        longPress.minimumPressDuration = 0.12;
+        longPress.minimumPressDuration = 0.1;
         [self addGestureRecognizer:longPress];
         [longPress release];
         
+        [self.scrollView.panGestureRecognizer requireGestureRecognizerToFail:longPress];
     }
     return self;
 }
@@ -159,6 +166,30 @@ static const NSInteger kSubviewInvalidTagOffset = -1;
     }
 }
 
+- (void)setPageSize:(CGSize)pageSize
+{
+    NSAssert(pageSize.width <= self.bounds.size.width, @"The page width should be smaller than view width");
+    if (!CGSizeEqualToSize(_pageSize, pageSize)) {
+        _pageSize = pageSize;
+        [self updateVisibalePages];
+    }
+}
+
+- (void)setFrame:(CGRect)frame
+{
+    [super setFrame:frame];
+    if (!CGSizeEqualToSize(frame.size, _pageSize))
+        [self updateVisibalePages];
+}
+
+- (void)setPageMargin:(CGFloat)pageMargin
+{
+    if (_pageMargin != pageMargin) {
+        _pageMargin = pageMargin;
+        [self updateVisibalePages];
+    }
+}
+
 #pragma mark - Private Methods
 
 - (void)loadNeededPages
@@ -192,10 +223,11 @@ static const NSInteger kSubviewInvalidTagOffset = -1;
 
 - (void)collectReusableViews
 {
-    for (int i=-1; i<=_currentPage-2; i++) {
+    NSInteger range = (_visibleNumberOfViewsPerPage + 1) / 2 + 1;
+    for (int i=-1; i<=_currentPage-range; i++) {
         [self clearUpandMakeReusableAtIndex:i];
     }
-    for (int i=_currentPage+2; i<=_totalPages; i++) {
+    for (int i=_currentPage+range; i<=_totalPages; i++) {
         [self clearUpandMakeReusableAtIndex:i];
     }
 }
@@ -213,6 +245,15 @@ static const NSInteger kSubviewInvalidTagOffset = -1;
 - (void)updateScrollViewOffset
 {
     
+}
+
+- (void)updateVisibalePages
+{
+    if (CGSizeEqualToSize(_pageSize, CGSizeZero))
+        return;
+    
+    _visibleNumberOfViewsPerPage = (self.frame.size.width - _pageSize.width) / (2 * (_pageSize.width + _pageMargin)) * 2 + 1;
+    _scrollWidth = _pageMargin + _pageSize.width;
 }
 
 - (void)adjustScrollViewOffsetToSinglePage

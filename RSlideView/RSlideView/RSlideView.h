@@ -29,7 +29,8 @@
     NSInteger                   _totalPages;
     NSInteger                   _currentPage;
     
-    NSInteger                   _visibleNumberOfViewsPerPage;
+    CGFloat                     _scrollWidth;
+    NSInteger                   _visibleNumberOfViewsPerPage;   // Should always be a odd number
     
     NSMutableArray             *_reusableViews;
     
@@ -48,6 +49,10 @@
 @property (nonatomic, assign, getter = isLoopSlide) BOOL loopSlide;
 @property (nonatomic, assign, getter = isContinuousScroll) BOOL continuousScroll;
 @property (nonatomic, assign, getter = isPageControlHidden) BOOL pageControlHidden;
+@property (nonatomic) CGSize pageSize;  // Default to be the RSlideView's size
+
+    // The Gap between two pages, default to be 0
+@property (nonatomic) CGFloat pageMargin;
 
 - (void)reloadData;
 - (UIView*)dequeueReusableView;

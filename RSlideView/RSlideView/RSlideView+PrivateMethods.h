@@ -16,5 +16,6 @@
 - (void)clearUpandMakeReusableAtIndex:(NSInteger)index;
 - (void)updateScrollViewOffset;
 - (void)adjustScrollViewOffsetToSinglePage;
+- (void)updateVisibalePages;
 - (void)longPressGestureHandler:(UILongPressGestureRecognizer*)longPress;
 @end
