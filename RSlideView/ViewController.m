@@ -7,6 +7,7 @@
 //
 
 #import "ViewController.h"
+#import <QuartzCore/QuartzCore.h>
 
 @implementation ViewController
 
@@ -51,6 +52,7 @@
     UIImageView *image = (UIImageView*)[_slideView dequeueReusableView];
     if (!image) {
         image = [[[UIImageView alloc] initWithFrame:_slideView.bounds] autorelease];
+
     }
     image.image = [UIImage imageNamed:[NSString stringWithFormat:@"%d.jpg",index]];
     return image;
@@ -83,6 +85,18 @@
 - (IBAction)onNext:(id)sender
 {
     [slideView nextPage];
+}
+
+- (IBAction)onPageWidth:(UISlider*)slider
+{
+    CGSize size = slideView.pageSize;
+    size.width = slider.value;
+    slideView.pageSize = size;
+}
+
+- (IBAction)onPageMargin:(UISlider*)slider
+{
+    slideView.pageMargin = slider.value;
 }
 
 - (IBAction)onLoopscroll:(UISwitch*)sender

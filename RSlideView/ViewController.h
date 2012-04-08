@@ -17,6 +17,8 @@
 
 - (IBAction)onPrev:(id)sender;
 - (IBAction)onNext:(id)sender;
+- (IBAction)onPageWidth:(id)sender;
+- (IBAction)onPageMargin:(id)sender;
 - (IBAction)onLoopscroll:(id)sender;
 - (IBAction)onContinuousscroll:(id)sender;
 @end

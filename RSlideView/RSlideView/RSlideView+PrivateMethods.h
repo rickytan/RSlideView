@@ -18,4 +18,5 @@
 - (void)adjustScrollViewOffsetToSinglePage;
 - (void)updateVisibalePages;
 - (void)longPressGestureHandler:(UILongPressGestureRecognizer*)longPress;
+- (void)panGestureHandler:(UIPanGestureRecognizer*)pan;
 @end
