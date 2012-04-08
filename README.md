@@ -9,6 +9,7 @@
 *  A UITableview like API, easy to use
 *  Support Loop Scroll, you can slide to one direction infinitly.
 *  Support Continuois Scroll, when it stops scrolling, it will adjust the offset to one entire page automaticlly.
+*  Support pageSize, pageMargin config, much flexible.
 
 **More Features to be added**:
 
