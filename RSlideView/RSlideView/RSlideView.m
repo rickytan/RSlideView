@@ -57,7 +57,7 @@ static const NSInteger kSubviewInvalidTagOffset = -1;
         
         UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressGestureHandler:)];
         longPress.numberOfTouchesRequired = 1;
-        longPress.minimumPressDuration = 0.1;
+        longPress.minimumPressDuration = 0.06;
         [self addGestureRecognizer:longPress];
         [longPress release];
         
@@ -212,8 +212,8 @@ static const NSInteger kSubviewInvalidTagOffset = -1;
     CGSize size = self.scrollView.bounds.size;
     UIView *view = [self viewOfPageAtIndex:index];
     if (!view) {
-        view = [self.dataSource RSliderView:self
-                         viewForPageAtIndex:indexToLoad];
+        view = [self.dataSource RSlideView:self
+                        viewForPageAtIndex:indexToLoad];
         view.frame = CGRectMake(size.width * index, 0, size.width, size.height);
         view.tag = index + kSubviewTagOffset;
         view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
@@ -370,12 +370,12 @@ static const NSInteger kSubviewInvalidTagOffset = -1;
         _currentPage = displayingPage;
         
         CGPoint offset = self.scrollView.contentOffset;
-        if (_currentPage == -1) {
+        if (_currentPage <= -1) {
             _currentPage = _totalPages - 1;
             offset.x += width * _totalPages;
             self.scrollView.contentOffset = offset;
         }
-        else if (_currentPage == _totalPages) {
+        else if (_currentPage >= _totalPages) {
             _currentPage = 0;
             offset.x -= width * _totalPages;
             self.scrollView.contentOffset = offset;
@@ -418,7 +418,11 @@ static const NSInteger kSubviewInvalidTagOffset = -1;
 
 - (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView
 {
-
+    CGFloat width = self.scrollView.bounds.size.width;
+    CGFloat halfWidth = width / 2.f;
+    
+    _currentPage = floorf((scrollView.contentOffset.x + halfWidth) / width);
+    self.pageControl.currentPage = _currentPage;
 }
 
 @end

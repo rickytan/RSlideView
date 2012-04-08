@@ -12,16 +12,18 @@
 
 @protocol RSlideViewDelegate <NSObject>
 @optional
-- (void)RSlideView:(RSlideView*)sliderView tapStartOnPageAtIndex:(NSInteger)index;
-- (void)RSlideView:(RSlideView*)sliderView tapEndOnPageAtIndex:(NSInteger)index;
-- (void)RSlideView:(RSlideView *)sliderView doubleTapOnPageAtIndex:(NSInteger)index;
+- (void)RSlideView:(RSlideView*)slideView tapStartOnPageAtIndex:(NSInteger)index;
+- (void)RSlideView:(RSlideView*)slideView tapEndOnPageAtIndex:(NSInteger)index;
+- (void)RSlideView:(RSlideView *)slideView doubleTapOnPageAtIndex:(NSInteger)index;
 @end
 
 @protocol RSlideViewDataSource <NSObject>
 @required
 - (NSInteger)RSlideViewNumberOfPages;
-- (UIView*)RSliderView:(RSlideView*)slideView 
+- (UIView*)RSlideView:(RSlideView*)slideView 
     viewForPageAtIndex:(NSInteger)index;
+@optional
+- (NSString*)RSlideView:(RSlideView*)slideView titleForPageAtIndex:(NSInteger)index;
 @end
 
 @interface RSlideView : UIView 

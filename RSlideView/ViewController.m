@@ -38,12 +38,14 @@
     return (interfaceOrientation != UIInterfaceOrientationPortraitUpsideDown);
 }
 
+#pragma mark - RSlideView Datasource
+
 - (NSInteger)RSlideViewNumberOfPages
 {
     return 3;
 }
 
-- (UIView*)RSliderView:(RSlideView *)_slideView 
+- (UIView*)RSlideView:(RSlideView *)_slideView 
     viewForPageAtIndex:(NSInteger)index
 {
     UIImageView *image = (UIImageView*)[_slideView dequeueReusableView];
@@ -52,6 +54,25 @@
     }
     image.image = [UIImage imageNamed:[NSString stringWithFormat:@"%d.jpg",index]];
     return image;
+}
+
+- (NSString*)RSlideView:(RSlideView *)slideView titleForPageAtIndex:(NSInteger)index
+{
+    return [NSString stringWithFormat:@"Title for %d",index];
+}
+
+#pragma mark - RSlideView Delegate
+
+- (void)RSlideView:(RSlideView *)_slideView tapStartOnPageAtIndex:(NSInteger)index
+{
+    UIImageView *image = (UIImageView*)[_slideView viewOfPageAtIndex:index];
+    image.alpha = 0.5;
+}
+
+- (void)RSlideView:(RSlideView *)_slideView tapEndOnPageAtIndex:(NSInteger)index
+{
+    UIImageView *image = (UIImageView*)[_slideView viewOfPageAtIndex:index];
+    image.alpha = 1.0;
 }
 
 - (IBAction)onPrev:(id)sender
