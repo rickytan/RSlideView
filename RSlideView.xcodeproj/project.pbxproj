@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		9C6B3B221532024900CBB0E3 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C6B3B211532024900CBB0E3 /* QuartzCore.framework */; };
+		9C6B3B221532024900CBB0E3 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C6B3B211532024900CBB0E3 /* QuartzCore.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		9CB6D94D1530B9B5008EA35E /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CB6D94C1530B9B5008EA35E /* UIKit.framework */; };
 		9CB6D94F1530B9B5008EA35E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CB6D94E1530B9B5008EA35E /* Foundation.framework */; };
 		9CB6D9511530B9B5008EA35E /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CB6D9501530B9B5008EA35E /* CoreGraphics.framework */; };
@@ -20,11 +20,15 @@
 		9CB6D9711530BD21008EA35E /* 1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 9CB6D96E1530BD21008EA35E /* 1.jpg */; };
 		9CB6D9721530BD21008EA35E /* 2.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 9CB6D96F1530BD21008EA35E /* 2.jpg */; };
 		9CB6D9731530BD21008EA35E /* 0.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 9CB6D9701530BD21008EA35E /* 0.jpg */; };
+		9CE4FFDC1532666D00E05856 /* 3.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 9CE4FFD81532666D00E05856 /* 3.jpg */; };
+		9CE4FFDD1532666D00E05856 /* 4.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 9CE4FFD91532666D00E05856 /* 4.jpg */; };
+		9CE4FFDE1532666D00E05856 /* 5.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 9CE4FFDA1532666D00E05856 /* 5.jpg */; };
+		9CE4FFDF1532666D00E05856 /* 6.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 9CE4FFDB1532666D00E05856 /* 6.jpg */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		9C6B3B211532024900CBB0E3 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
-		9CB6D9481530B9B5008EA35E /* RSlideView.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RSlideView.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		9CB6D9481530B9B5008EA35E /* RSlideViewDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RSlideViewDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9CB6D94C1530B9B5008EA35E /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		9CB6D94E1530B9B5008EA35E /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		9CB6D9501530B9B5008EA35E /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -43,6 +47,10 @@
 		9CB6D96E1530BD21008EA35E /* 1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 1.jpg; sourceTree = "<group>"; };
 		9CB6D96F1530BD21008EA35E /* 2.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 2.jpg; sourceTree = "<group>"; };
 		9CB6D9701530BD21008EA35E /* 0.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 0.jpg; sourceTree = "<group>"; };
+		9CE4FFD81532666D00E05856 /* 3.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 3.jpg; sourceTree = "<group>"; };
+		9CE4FFD91532666D00E05856 /* 4.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 4.jpg; sourceTree = "<group>"; };
+		9CE4FFDA1532666D00E05856 /* 5.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 5.jpg; sourceTree = "<group>"; };
+		9CE4FFDB1532666D00E05856 /* 6.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 6.jpg; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,7 +80,7 @@
 		9CB6D9491530B9B5008EA35E /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				9CB6D9481530B9B5008EA35E /* RSlideView.app */,
+				9CB6D9481530B9B5008EA35E /* RSlideViewDemo.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -92,6 +100,10 @@
 			isa = PBXGroup;
 			children = (
 				9CB6D9701530BD21008EA35E /* 0.jpg */,
+				9CE4FFD81532666D00E05856 /* 3.jpg */,
+				9CE4FFD91532666D00E05856 /* 4.jpg */,
+				9CE4FFDA1532666D00E05856 /* 5.jpg */,
+				9CE4FFDB1532666D00E05856 /* 6.jpg */,
 				9CB6D96E1530BD21008EA35E /* 1.jpg */,
 				9CB6D96F1530BD21008EA35E /* 2.jpg */,
 				9CB6D95B1530B9B5008EA35E /* AppDelegate.h */,
@@ -129,9 +141,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		9CB6D9471530B9B5008EA35E /* RSlideView */ = {
+		9CB6D9471530B9B5008EA35E /* RSlideViewDemo */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 9CB6D9661530B9B5008EA35E /* Build configuration list for PBXNativeTarget "RSlideView" */;
+			buildConfigurationList = 9CB6D9661530B9B5008EA35E /* Build configuration list for PBXNativeTarget "RSlideViewDemo" */;
 			buildPhases = (
 				9CB6D9441530B9B5008EA35E /* Sources */,
 				9CB6D9451530B9B5008EA35E /* Frameworks */,
@@ -141,9 +153,9 @@
 			);
 			dependencies = (
 			);
-			name = RSlideView;
+			name = RSlideViewDemo;
 			productName = RSlideView;
-			productReference = 9CB6D9481530B9B5008EA35E /* RSlideView.app */;
+			productReference = 9CB6D9481530B9B5008EA35E /* RSlideViewDemo.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -166,7 +178,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				9CB6D9471530B9B5008EA35E /* RSlideView */,
+				9CB6D9471530B9B5008EA35E /* RSlideViewDemo */,
 			);
 		};
 /* End PBXProject section */
@@ -181,6 +193,10 @@
 				9CB6D9711530BD21008EA35E /* 1.jpg in Resources */,
 				9CB6D9721530BD21008EA35E /* 2.jpg in Resources */,
 				9CB6D9731530BD21008EA35E /* 0.jpg in Resources */,
+				9CE4FFDC1532666D00E05856 /* 3.jpg in Resources */,
+				9CE4FFDD1532666D00E05856 /* 4.jpg in Resources */,
+				9CE4FFDE1532666D00E05856 /* 5.jpg in Resources */,
+				9CE4FFDF1532666D00E05856 /* 6.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -297,7 +313,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		9CB6D9661530B9B5008EA35E /* Build configuration list for PBXNativeTarget "RSlideView" */ = {
+		9CB6D9661530B9B5008EA35E /* Build configuration list for PBXNativeTarget "RSlideViewDemo" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				9CB6D9671530B9B5008EA35E /* Debug */,

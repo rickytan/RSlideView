@@ -43,6 +43,9 @@
     CGFloat                     _scrollWidth;
     CGFloat                     _centralizeOffset;
     NSInteger                   _visibleNumberOfViewsPerPage;   // Should always be a odd number
+    NSInteger                   _extraPagesForLoopShow;
+    
+    BOOL                        _allowScrollToPage;
     
     NSMutableArray             *_reusableViews;
     
@@ -78,6 +81,10 @@
                     animated:(BOOL)animated;
 @end
 
+typedef enum {
+    RPageControllTitleAlignLeft = 0,
+    RPageControllTitleAlignRight
+}RPageControlTitleAlignment;
 
 @interface RPageControll : UIPageControl {
 @private
@@ -85,4 +92,5 @@
 }
 @property (nonatomic, assign) NSString *title;
 @property (nonatomic, assign) id<RPageControllDataSource> dataSource;
+@property (nonatomic, assign) RPageControlTitleAlignment titleAlignment;
 @end

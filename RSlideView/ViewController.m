@@ -43,7 +43,7 @@
 
 - (NSInteger)RSlideViewNumberOfPages
 {
-    return 3;
+    return 7;
 }
 
 - (UIView*)RSlideView:(RSlideView *)_slideView 

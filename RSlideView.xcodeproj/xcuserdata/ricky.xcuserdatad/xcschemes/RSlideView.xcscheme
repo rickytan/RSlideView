@@ -14,8 +14,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "9CB6D9471530B9B5008EA35E"
-               BuildableName = "RSlideView.app"
-               BlueprintName = "RSlideView"
+               BuildableName = "RSlideViewDemo.app"
+               BlueprintName = "RSlideViewDemo"
                ReferencedContainer = "container:RSlideView.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -32,8 +32,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "9CB6D9471530B9B5008EA35E"
-            BuildableName = "RSlideView.app"
-            BlueprintName = "RSlideView"
+            BuildableName = "RSlideViewDemo.app"
+            BlueprintName = "RSlideViewDemo"
             ReferencedContainer = "container:RSlideView.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -50,8 +50,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "9CB6D9471530B9B5008EA35E"
-            BuildableName = "RSlideView.app"
-            BlueprintName = "RSlideView"
+            BuildableName = "RSlideViewDemo.app"
+            BlueprintName = "RSlideViewDemo"
             ReferencedContainer = "container:RSlideView.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -68,8 +68,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "9CB6D9471530B9B5008EA35E"
-            BuildableName = "RSlideView.app"
-            BlueprintName = "RSlideView"
+            BuildableName = "RSlideViewDemo.app"
+            BlueprintName = "RSlideViewDemo"
             ReferencedContainer = "container:RSlideView.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
