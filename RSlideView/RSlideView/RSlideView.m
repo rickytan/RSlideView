@@ -62,11 +62,12 @@ enum {
         
         UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressGestureHandler:)];
         longPress.numberOfTouchesRequired = 1;
-        longPress.minimumPressDuration = 0.06;
+        longPress.minimumPressDuration = 0.08;
+        longPress.delaysTouchesBegan = YES;
         [self addGestureRecognizer:longPress];
         [longPress release];
         
-        [self.scrollView.panGestureRecognizer requireGestureRecognizerToFail:longPress];
+            //[self.scrollView.panGestureRecognizer requireGestureRecognizerToFail:longPress];
         [self.scrollView.panGestureRecognizer addTarget:self
                                                  action:@selector(panGestureHandler:)];
     }
@@ -295,11 +296,11 @@ enum {
 - (void)onPageControlValueChange:(id)sender
 {
     NSInteger page = self.pageControl.currentPage;
+
+    CGPoint offset = CGPointMake(_scrollWidth*page, 0);
     
-    CGFloat width = self.scrollView.bounds.size.width;
-    CGPoint offset = CGPointMake(width*page, 0);
-    
-    [self.scrollView setContentOffset:offset animated:YES];
+    [self.scrollView setContentOffset:offset
+                             animated:YES];
         //self.pageControl.currentPage = page;
 }
 
@@ -438,12 +439,18 @@ enum {
         if (_currentPage <= -1) {
             _currentPage = _totalPages - 1;
             offset.x += _scrollWidth * _totalPages;
-            [self.scrollView setContentOffset:offset];
+            NSLog(@"x:%f,y:%f",offset.x,offset.y);
+            self.scrollView.delegate = nil;
+            self.scrollView.contentOffset = offset;
+            self.scrollView.delegate = self;
         }
         else if (_currentPage >= _totalPages) {
             _currentPage = 0;
             offset.x -= _scrollWidth * _totalPages;
-            [self.scrollView setContentOffset:offset];
+            NSLog(@"x:%f,y:%f",offset.x,offset.y);
+            self.scrollView.delegate = nil;
+            self.scrollView.contentOffset = offset;
+            self.scrollView.delegate = self;
         }
         [self collectReusableViews]; 
         [self loadNeededPages];
@@ -493,6 +500,8 @@ enum {
 @synthesize title = _title;
 @synthesize dataSource = _dataSource;
 @synthesize titleAlignment;
+@synthesize dotImage = _dotImage, highlightedDotImage = _highlightedDotImage;
+@synthesize dotMargin, dotRadius, highlightedDotRadius;
 
 - (void)setTitle:(NSString *)title
 {
@@ -500,7 +509,7 @@ enum {
         
         if (!_titleLabel) {
             self.backgroundColor = [UIColor blackColor];
-            self.alpha = 0.6;
+            self.alpha = 0.5;
             
             UILabel *label = [[UILabel alloc] initWithFrame:self.bounds];
             label.font = [UIFont systemFontOfSize:12];
@@ -522,6 +531,7 @@ enum {
         self.backgroundColor = [UIColor clearColor];
         self.alpha = 1.0;
     }
+
     _titleLabel.text = title;
 }
 
@@ -556,10 +566,15 @@ enum {
 - (void)setAlpha:(CGFloat)alpha
 {
     if (_titleLabel) {
-        if (alpha > 0.6)
-            alpha = 0.6;
+        if (alpha > 0.5)
+            alpha = 0.5;
     }
     [super setAlpha:alpha];
+}
+
+- (void)drawRect:(CGRect)rect
+{
+    
 }
 
 @end

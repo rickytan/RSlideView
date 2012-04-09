@@ -93,4 +93,9 @@ typedef enum {
 @property (nonatomic, assign) NSString *title;
 @property (nonatomic, assign) id<RPageControllDataSource> dataSource;
 @property (nonatomic, assign) RPageControlTitleAlignment titleAlignment;
+@property (nonatomic, assign) CGFloat dotMargin;
+@property (nonatomic, assign) CGFloat dotRadius;
+@property (nonatomic, assign) CGFloat highlightedDotRadius;
+@property (nonatomic, retain) UIImage *dotImage;
+@property (nonatomic, retain) UIImage *highlightedDotImage;
 @end
