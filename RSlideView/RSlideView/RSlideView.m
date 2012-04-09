@@ -248,10 +248,10 @@ enum {
         }
     }
     else {
-        for (int i=-_extraPagesForLoopShow; i<MAX(0, _currentPage - range); i++) {
+        for (int i=-_extraPagesForLoopShow; i<MAX(0, _currentPage - _extraPagesForLoopShow); i++) {
             [self clearUpandMakeReusableAtIndex:i];
         }
-        for (int i=MIN(_totalPages, _currentPage+range); i<=_totalPages-1+_extraPagesForLoopShow; i++) {
+        for (int i=MIN(_totalPages-1, _currentPage+_extraPagesForLoopShow)+1; i<=_totalPages-1+_extraPagesForLoopShow; i++) {
             [self clearUpandMakeReusableAtIndex:i];
         }
     }
