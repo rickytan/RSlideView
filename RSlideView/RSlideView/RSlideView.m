@@ -171,7 +171,7 @@ enum {
     
     if (_loopSlide) {
         CGFloat width = self.scrollView.frame.size.width;
-        self.scrollView.contentInset = UIEdgeInsetsMake(0, width, 0, width);
+            //self.scrollView.contentInset = UIEdgeInsetsMake(0, 2*width, 0, 2*width);
         [self loadNeededPages];
     }
     else {
@@ -368,7 +368,7 @@ enum {
     self.pageControl.numberOfPages = _totalPages;
     self.pageControl.currentPage = _currentPage;
     
-    self.scrollView.contentSize = CGSizeMake(_scrollWidth * _totalPages + _pageMargin + _centralizeOffset*2,
+    self.scrollView.contentSize = CGSizeMake(_scrollWidth * (_totalPages+1) + _pageMargin + _centralizeOffset*2,
                                              self.scrollView.bounds.size.height);
     self.scrollView.contentOffset = CGPointMake(_scrollWidth * _currentPage, 0);
     
@@ -439,19 +439,15 @@ enum {
         if (_currentPage <= -1) {
             _currentPage = _totalPages - 1;
             offset.x += _scrollWidth * _totalPages;
-            NSLog(@"x:%f,y:%f",offset.x,offset.y);
-            self.scrollView.delegate = nil;
-            self.scrollView.contentOffset = offset;
-            self.scrollView.delegate = self;
         }
         else if (_currentPage >= _totalPages) {
             _currentPage = 0;
-            offset.x -= _scrollWidth * _totalPages;
-            NSLog(@"x:%f,y:%f",offset.x,offset.y);
-            self.scrollView.delegate = nil;
-            self.scrollView.contentOffset = offset;
-            self.scrollView.delegate = self;
+            offset.x -= _scrollWidth * (_totalPages - 1);
         }
+        self.scrollView.delegate = nil;
+        self.scrollView.contentInset = UIEdgeInsetsZero;
+        self.scrollView.contentOffset = offset;
+        self.scrollView.delegate = self;
         [self collectReusableViews]; 
         [self loadNeededPages];
     }

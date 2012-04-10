@@ -42,6 +42,7 @@
     
     CGFloat                     _scrollWidth;
     CGFloat                     _centralizeOffset;
+    CGFloat                     _loopOffset;
     NSInteger                   _visibleNumberOfViewsPerPage;   // Should always be a odd number
     NSInteger                   _extraPagesForLoopShow;
     
