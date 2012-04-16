@@ -35,7 +35,7 @@
 @end
 
 
-@interface RSlideView : UIView 
+@interface RSlideView : UIControl 
 <UIScrollViewDelegate,RPageControllDataSource> {
     NSInteger                   _totalPages;
     NSInteger                   _currentPage;
