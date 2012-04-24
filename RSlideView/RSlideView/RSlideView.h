@@ -16,6 +16,8 @@
 - (void)RSlideView:(RSlideView*)slideView tapStartOnPageAtIndex:(NSInteger)index;
 - (void)RSlideView:(RSlideView*)slideView tapEndOnPageAtIndex:(NSInteger)index;
 - (void)RSlideView:(RSlideView *)slideView doubleTapOnPageAtIndex:(NSInteger)index;
+
+- (void)RSlideView:(RSlideView*)sliderView didScrollAtPageOffset:(CGFloat)pageOffset;
 @end
 
 @protocol RSlideViewDataSource <NSObject>
@@ -29,14 +31,23 @@
 
 
 @protocol RPageControllDataSource <NSObject>
-
+@optional
 - (NSString*)RPageControllTitleForPage:(NSInteger)index;
+
+@end
+
+@protocol RPageControllDelegate <NSObject>
+@optional
+- (void)RPageControllDidChangePage:(RPageControll*)pageControl;
 
 @end
 
 
 @interface RSlideView : UIControl 
-<UIScrollViewDelegate,RPageControllDataSource> {
+<UIScrollViewDelegate,
+RPageControllDataSource,
+RPageControllDelegate,
+UIGestureRecognizerDelegate> {
     NSInteger                   _totalPages;
     NSInteger                   _currentPage;
     
@@ -50,8 +61,7 @@
     
     NSMutableArray             *_reusableViews;
     
-    UIView                     *_firstView;
-    UIView                     *_lastView;
+    UILongPressGestureRecognizer *_longPress;
     
     UIScrollView               *_scrollView;
     RPageControll              *_pageControl;
@@ -73,7 +83,8 @@
 - (void)reloadData;
 - (UIView*)dequeueReusableView;
 - (UIView*)viewOfPageAtIndex:(NSInteger)index;
-- (void)scrollToPageAtIndex:(NSInteger)index;
+- (void)scrollToPageAtIndex:(NSInteger)index;   // Scroll to a page, e.g 1 ... n
+- (void)scrollToPageOffset:(CGFloat)pageOffset; // Scroll to a offset, can be 1.25
 
 - (void)previousPage;
 - (void)nextPage;
@@ -87,16 +98,26 @@ typedef enum {
     RPageControllTitleAlignRight
 }RPageControlTitleAlignment;
 
-@interface RPageControll : UIPageControl {
+@interface RPageControll : UIView {
 @private
     UILabel                     *_titleLabel;
+    UIPageControl               *_pageControl;
 }
+
 @property (nonatomic, assign) NSString *title;
 @property (nonatomic, assign) id<RPageControllDataSource> dataSource;
+@property (nonatomic, assign) id<RPageControllDelegate> delegate;
 @property (nonatomic, assign) RPageControlTitleAlignment titleAlignment;
 @property (nonatomic, assign) CGFloat dotMargin;
 @property (nonatomic, assign) CGFloat dotRadius;
 @property (nonatomic, assign) CGFloat highlightedDotRadius;
 @property (nonatomic, retain) UIImage *dotImage;
 @property (nonatomic, retain) UIImage *highlightedDotImage;
+@property (nonatomic, assign) NSInteger numberOfPages;
+@property (nonatomic, assign) NSInteger currentPage;
+
+
+- (void)setNumberOfPages:(NSInteger)numberOfPages;
+- (void)setCurrentPage:(NSInteger)currentPage;
+
 @end
