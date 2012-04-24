@@ -335,6 +335,9 @@ enum {
 - (void)adjustScrollViewOffsetToSinglePage
 {
         //CGFloat width = self.scrollView.frame.size.width;
+    if (self.scrollView.isDecelerating)
+        return;
+    
     self.pageControl.currentPage = _currentPage;
     [self.scrollView setContentOffset:CGPointMake(_currentPage*_scrollWidth+_loopOffset, 0) 
                              animated:YES];
@@ -489,7 +492,6 @@ enum {
 {
     if (_allowScrollToPage) {
         _allowScrollToPage = NO;
-        _longPress.enabled = NO;
         [self.scrollView setContentOffset:CGPointMake(_scrollWidth*index+_loopOffset, 0)
                                  animated:YES];
     }
@@ -537,6 +539,10 @@ enum {
     NSInteger displayingPage = floorf((offset + halfWidth) / _scrollWidth);
     
     if (displayingPage != _currentPage) {   // have to load new page
+        if (!self.loopSlide) {
+            if (displayingPage < 0 || displayingPage >= _totalPages)
+                return;
+        }
         _currentPage = displayingPage;
         
         CGPoint offset = self.scrollView.contentOffset;
@@ -595,7 +601,6 @@ enum {
     self.pageControl.currentPage = _currentPage;
     
     _allowScrollToPage = YES;
-    _longPress.enabled = YES;
 }
 
 #pragma mark - UIGesture Delegate
