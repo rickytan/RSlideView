@@ -10,6 +10,7 @@
 #import <QuartzCore/QuartzCore.h>
 
 @implementation ViewController
+@synthesize heightSlider;
 
 - (void)didReceiveMemoryWarning
 {
@@ -31,6 +32,8 @@
     
     [slideView setPageControlHidden:NO
                            animated:YES];
+    CGAffineTransform trans = CGAffineTransformMakeRotation(M_PI_2);
+    self.heightSlider.transform = trans;
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -94,6 +97,13 @@
     slideView.pageSize = size;
 }
 
+- (IBAction)onPageHeight:(UISlider*)slider
+{
+    CGSize size = slideView.pageSize;
+    size.height = slider.value;
+    slideView.pageSize = size;
+}
+
 - (IBAction)onPageMargin:(UISlider*)slider
 {
     slideView.pageMargin = slider.value;
@@ -109,4 +119,8 @@
     slideView.continuousScroll = sender.on;
 }
 
+- (IBAction)onTitleAlignment:(UISwitch*)sender
+{
+    [slideView setPageTitleAlignment:sender.on?RPageControllTitleAlignRight:RPageControllTitleAlignLeft];
+}
 @end

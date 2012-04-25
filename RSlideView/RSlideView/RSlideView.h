@@ -11,6 +11,48 @@
 @class RSlideView;
 @class RPageControll;
 
+
+@protocol RPageControllDataSource <NSObject>
+@optional
+- (NSString*)RPageControllTitleForPage:(NSInteger)index;
+
+@end
+
+@protocol RPageControllDelegate <NSObject>
+@optional
+- (void)RPageControllDidChangePage:(RPageControll*)pageControl;
+
+@end
+
+typedef enum {
+    RPageControllTitleAlignLeft = 0,
+    RPageControllTitleAlignRight
+}RPageControlTitleAlignment;
+
+@interface RPageControll : UIView {
+@private
+    UILabel                     *_titleLabel;
+    UIPageControl               *_pageControl;
+}
+
+@property (nonatomic, assign) NSString *title;
+@property (nonatomic, assign) id<RPageControllDataSource> dataSource;
+@property (nonatomic, assign) id<RPageControllDelegate> delegate;
+@property (nonatomic, assign) RPageControlTitleAlignment titleAlignment;
+@property (nonatomic, assign) CGFloat dotMargin;
+@property (nonatomic, assign) CGFloat dotRadius;
+@property (nonatomic, assign) CGFloat highlightedDotRadius;
+@property (nonatomic, retain) UIImage *dotImage;
+@property (nonatomic, retain) UIImage *highlightedDotImage;
+@property (nonatomic, assign) NSInteger numberOfPages;
+@property (nonatomic, assign) NSInteger currentPage;
+
+
+- (void)setNumberOfPages:(NSInteger)numberOfPages;
+- (void)setCurrentPage:(NSInteger)currentPage;
+
+@end
+
 @protocol RSlideViewDelegate <NSObject>
 @optional
 - (void)RSlideView:(RSlideView*)slideView tapStartOnPageAtIndex:(NSInteger)index;
@@ -30,19 +72,6 @@
 @end
 
 
-@protocol RPageControllDataSource <NSObject>
-@optional
-- (NSString*)RPageControllTitleForPage:(NSInteger)index;
-
-@end
-
-@protocol RPageControllDelegate <NSObject>
-@optional
-- (void)RPageControllDidChangePage:(RPageControll*)pageControl;
-
-@end
-
-
 @interface RSlideView : UIControl 
 <UIScrollViewDelegate,
 RPageControllDataSource,
@@ -51,9 +80,6 @@ UIGestureRecognizerDelegate> {
     NSInteger                   _totalPages;
     NSInteger                   _currentPage;
     
-    CGFloat                     _scrollWidth;
-    CGFloat                     _centralizeOffset;
-    CGFloat                     _loopOffset;
     NSInteger                   _visibleNumberOfViewsPerPage;   // Should always be a odd number
     NSInteger                   _extraPagesForLoopShow;
     
@@ -91,33 +117,6 @@ UIGestureRecognizerDelegate> {
 
 - (void)setPageControlHidden:(BOOL)pageControlHidden 
                     animated:(BOOL)animated;
+- (void)setPageTitleAlignment:(RPageControlTitleAlignment)align;
 @end
 
-typedef enum {
-    RPageControllTitleAlignLeft = 0,
-    RPageControllTitleAlignRight
-}RPageControlTitleAlignment;
-
-@interface RPageControll : UIView {
-@private
-    UILabel                     *_titleLabel;
-    UIPageControl               *_pageControl;
-}
-
-@property (nonatomic, assign) NSString *title;
-@property (nonatomic, assign) id<RPageControllDataSource> dataSource;
-@property (nonatomic, assign) id<RPageControllDelegate> delegate;
-@property (nonatomic, assign) RPageControlTitleAlignment titleAlignment;
-@property (nonatomic, assign) CGFloat dotMargin;
-@property (nonatomic, assign) CGFloat dotRadius;
-@property (nonatomic, assign) CGFloat highlightedDotRadius;
-@property (nonatomic, retain) UIImage *dotImage;
-@property (nonatomic, retain) UIImage *highlightedDotImage;
-@property (nonatomic, assign) NSInteger numberOfPages;
-@property (nonatomic, assign) NSInteger currentPage;
-
-
-- (void)setNumberOfPages:(NSInteger)numberOfPages;
-- (void)setCurrentPage:(NSInteger)currentPage;
-
-@end
