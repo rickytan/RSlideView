@@ -32,7 +32,7 @@
     
     [slideView setPageControlHidden:NO
                            animated:YES];
-    CGAffineTransform trans = CGAffineTransformMakeRotation(M_PI_2);
+    CGAffineTransform trans = CGAffineTransformMakeRotation(-M_PI_2);
     self.heightSlider.transform = trans;
 }
 

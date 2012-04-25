@@ -63,29 +63,22 @@ enum {
         /*
         UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressGestureHandler:)];
         longPress.numberOfTouchesRequired = 1;
-        longPress.minimumPressDuration = 0.1;
+        longPress.minimumPressDuration = 0.05;
         longPress.delaysTouchesBegan = NO;
         longPress.delegate = self;
         [self addGestureRecognizer:longPress];
         [longPress release];
         
         _longPress = longPress;
-        
+        */
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self
                                                                               action:@selector(tapGestureHandler:)];
         tap.numberOfTapsRequired = 1;
         tap.numberOfTouchesRequired = 1;
         [self addGestureRecognizer:tap];
         [tap release];
-         */
-        /*
-         [self addTarget:self
-         action:@selector(onTapdown:)
-         forControlEvents:UIControlEventAllTouchEvents];
-         [self addTarget:self
-         action:@selector(onTapupinside:)
-         forControlEvents:UIControlEventTouchUpInside];
-         */
+
+         
         
             //[self.scrollView.panGestureRecognizer requireGestureRecognizerToFail:longPress];
         
@@ -110,15 +103,17 @@ enum {
  // Drawing code
  }
  */
-
+/*
 - (UIView*)hitTest:(CGPoint)point withEvent:(UIEvent *)event
 {
     if (CGRectContainsPoint(_pageControl.frame, point))
-        return _pageControl;
+        return [_pageControl hitTest:[self convertPoint:point toView:_pageControl]
+                           withEvent:event];
     else if (CGRectContainsPoint(self.bounds, point))
         return _scrollView;
     return nil;
 }
+ */
 
 #pragma mark - getter/setter
 
@@ -134,16 +129,16 @@ enum {
     return _pageControl;
 }
 
-- (UIScrollView*)scrollView
+- (RScrollView*)scrollView
 {
     if (!_scrollView) {
-        _scrollView = [[UIScrollView alloc] initWithFrame:self.bounds];
+        _scrollView = [[RScrollView alloc] initWithFrame:self.bounds];
         _scrollView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
         _scrollView.pagingEnabled = YES;
         _scrollView.scrollEnabled = YES;
         _scrollView.clipsToBounds = NO;
         _scrollView.bounces = YES;
-        _scrollView.backgroundColor = [UIColor yellowColor];
+        _scrollView.backgroundColor = [UIColor clearColor];
         _scrollView.showsVerticalScrollIndicator = NO;
         _scrollView.showsHorizontalScrollIndicator = NO;
         _scrollView.multipleTouchEnabled = NO;
@@ -350,21 +345,6 @@ enum {
     self.pageControl.currentPage = _currentPage;
     [self.scrollView setContentOffset:CGPointMake(_currentPage*_scrollView.frame.size.width, 0) 
                              animated:YES];
-}
-
-
-- (void)onTapdown:(id)sender
-{
-    if ([self.delegate respondsToSelector:@selector(RSlideView:tapStartOnPageAtIndex:)]) {
-        [self.delegate RSlideView:self tapStartOnPageAtIndex:_currentPage];
-    }
-}
-
-- (void)onTapupinside:(id)sender
-{
-    if ([self.delegate respondsToSelector:@selector(RSlideView:tapEndOnPageAtIndex:)]) {
-        [self.delegate RSlideView:self tapEndOnPageAtIndex:_currentPage];
-    }
 }
 
 - (void)longPressGestureHandler:(UILongPressGestureRecognizer *)longPress
@@ -755,6 +735,34 @@ enum {
         default:
             break;
     }
+}
+
+@end
+
+@implementation RScrollView
+
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    [super touchesBegan:touches withEvent:event];
+    [self.superview touchesBegan:touches withEvent:event];
+}
+
+- (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    [super touchesMoved:touches withEvent:event];
+    [self.superview touchesMoved:touches withEvent:event];
+}
+
+- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    [super touchesEnded:touches withEvent:event];
+    [self.superview touchesEnded:touches withEvent:event];
+}
+
+- (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    [super touchesCancelled:touches withEvent:event];
+    [self.superview touchesCancelled:touches withEvent:event];
 }
 
 @end

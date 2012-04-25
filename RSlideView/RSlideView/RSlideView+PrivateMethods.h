@@ -21,7 +21,5 @@
 - (void)longPressGestureHandler:(UILongPressGestureRecognizer*)longPress;
 - (void)tapGestureHandler:(UITapGestureRecognizer*)tap;
 - (void)panGestureHandler:(UIPanGestureRecognizer*)pan;
-- (void)onTapdown:(id)sender;
-- (void)onTapupinside:(id)sender;
 - (void)didReceiveMemoryWarning:(NSNotification*)notification;
 @end

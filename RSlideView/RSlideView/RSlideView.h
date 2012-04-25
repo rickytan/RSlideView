@@ -53,6 +53,9 @@ typedef enum {
 
 @end
 
+@interface RScrollView : UIScrollView
+@end
+
 @protocol RSlideViewDelegate <NSObject>
 @optional
 - (void)RSlideView:(RSlideView*)slideView tapStartOnPageAtIndex:(NSInteger)index;
@@ -89,15 +92,17 @@ UIGestureRecognizerDelegate> {
     
     UILongPressGestureRecognizer *_longPress;
     
-    UIScrollView               *_scrollView;
+    RScrollView               *_scrollView;
     RPageControll              *_pageControl;
+    
+    UIView                     *_highlightedView;
 }
 
 @property (nonatomic, assign) id<RSlideViewDelegate> delegate;
 @property (nonatomic, assign) id<RSlideViewDataSource> dataSource;
 
 @property (nonatomic, readonly) RPageControll *pageControl;
-@property (nonatomic, readonly) UIScrollView *scrollView;
+@property (nonatomic, readonly) RScrollView *scrollView;
 @property (nonatomic, assign, getter = isLoopSlide) BOOL loopSlide;
 @property (nonatomic, assign, getter = isContinuousScroll) BOOL continuousScroll;
 @property (nonatomic, assign, getter = isPageControlHidden) BOOL pageControlHidden;
