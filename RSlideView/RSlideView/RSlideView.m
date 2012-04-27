@@ -440,6 +440,8 @@ enum {
 
 - (void)scrollToPageAtIndex:(NSInteger)index
 {
+    if (index == _currentPage)
+        return;
     if (_allowScrollToPage) {
         _allowScrollToPage = NO;
             //index = (index - index / _totalPages * _totalPages + _totalPages) % _totalPages;
