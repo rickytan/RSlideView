@@ -360,8 +360,10 @@ enum {
             CGPoint location = [tap locationInView:_scrollView];
             UIView *view = [_scrollView hitTest:location withEvent:nil];
             NSInteger idx = [self indexOfPageView:view];
-            if ([self.delegate respondsToSelector:@selector(RSlideView:tapOnPageAtIndex:)]) {
-                [self.delegate RSlideView:self tapOnPageAtIndex:idx];
+            if (idx != NSNotFound) {
+                if ([self.delegate respondsToSelector:@selector(RSlideView:tapOnPageAtIndex:)]) {
+                    [self.delegate RSlideView:self tapOnPageAtIndex:(idx+_totalPages)%_totalPages];
+                }
             }
         }
             break;
