@@ -58,8 +58,7 @@ typedef enum {
 
 @protocol RSlideViewDelegate <NSObject>
 @optional
-- (void)RSlideView:(RSlideView*)slideView tapStartOnPageAtIndex:(NSInteger)index;
-- (void)RSlideView:(RSlideView*)slideView tapEndOnPageAtIndex:(NSInteger)index;
+- (void)RSlideView:(RSlideView*)slideView tapOnPageAtIndex:(NSInteger)index;
 - (void)RSlideView:(RSlideView *)slideView doubleTapOnPageAtIndex:(NSInteger)index;
 
 - (void)RSlideView:(RSlideView*)sliderView didScrollAtPageOffset:(CGFloat)pageOffset;
@@ -75,7 +74,7 @@ typedef enum {
 @end
 
 
-@interface RSlideView : UIControl 
+@interface RSlideView : UIView 
 <UIScrollViewDelegate,
 RPageControllDataSource,
 RPageControllDelegate,
@@ -92,10 +91,11 @@ UIGestureRecognizerDelegate> {
     
     UILongPressGestureRecognizer *_longPress;
     
-    RScrollView               *_scrollView;
+    RScrollView                *_scrollView;
     RPageControll              *_pageControl;
     
     UIView                     *_highlightedView;
+    NSInteger                   _selectedPageIndex;
 }
 
 @property (nonatomic, assign) id<RSlideViewDelegate> delegate;
@@ -114,6 +114,7 @@ UIGestureRecognizerDelegate> {
 - (void)reloadData;
 - (UIView*)dequeueReusableView;
 - (UIView*)viewOfPageAtIndex:(NSInteger)index;
+- (NSInteger)indexOfPageView:(UIView*)view;
 - (void)scrollToPageAtIndex:(NSInteger)index;   // Scroll to a page, e.g 1 ... n
 - (void)scrollToPageOffset:(CGFloat)pageOffset; // Scroll to a offset, can be 1.25
 

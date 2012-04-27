@@ -68,16 +68,13 @@
 
 #pragma mark - RSlideView Delegate
 
-- (void)RSlideView:(RSlideView *)_slideView tapStartOnPageAtIndex:(NSInteger)index
+- (void)RSlideView:(RSlideView *)_slideView tapOnPageAtIndex:(NSInteger)index
 {
-    UIImageView *image = (UIImageView*)[_slideView viewOfPageAtIndex:index];
-    image.alpha = 0.5;
-}
-
-- (void)RSlideView:(RSlideView *)_slideView tapEndOnPageAtIndex:(NSInteger)index
-{
-    UIImageView *image = (UIImageView*)[_slideView viewOfPageAtIndex:index];
-    image.alpha = 1.0;
+    [[[[UIAlertView alloc] initWithTitle:@"Click"
+                                 message:[NSString stringWithFormat:@"You tapped on index %d",index]
+                                delegate:nil
+                       cancelButtonTitle:@"OK"
+                       otherButtonTitles:nil] autorelease] show];
 }
 
 - (IBAction)onPrev:(id)sender
