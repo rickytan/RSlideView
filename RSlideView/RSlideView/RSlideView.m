@@ -31,7 +31,53 @@ enum {
     [_scrollView release];
     
     [_reusableViews release];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
     [super dealloc];
+}
+
+- (void)commonInit
+{
+    self.autoresizesSubviews = YES;
+    self.userInteractionEnabled = YES;
+    self.clipsToBounds = YES;
+    
+    [self addSubview:self.scrollView];
+    
+    CGRect rect = self.pageControl.frame;
+    rect.origin = CGPointMake(0, rect.size.height - 24.f);
+    rect.size = CGSizeMake(rect.size.width, 24.f);
+    self.pageControl.frame = rect;
+    [self addSubview:self.pageControl];
+    
+    _reusableViews = [[NSMutableArray alloc] initWithCapacity:16];
+    _visibleNumberOfViewsPerPage = 1;
+    _totalPages = 0;
+    _currentPage = 0;
+    
+    _allowScrollToPage = YES;
+
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self
+                                                                          action:@selector(tapGestureHandler:)];
+    tap.numberOfTapsRequired = 1;
+    tap.numberOfTouchesRequired = 1;
+    
+    [self addGestureRecognizer:tap];
+    [tap release];
+    
+    //[self.scrollView.panGestureRecognizer requireGestureRecognizerToFail:longPress];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(didReceiveMemoryWarning:)
+                                                 name:UIApplicationDidReceiveMemoryWarningNotification
+                                               object:nil];
+
+}
+
+- (void)awakeFromNib
+{
+    [self commonInit];
+    [self reloadData];
 }
 
 - (id)initWithFrame:(CGRect)frame
@@ -39,54 +85,7 @@ enum {
     self = [super initWithFrame:frame];
     if (self) {
             // Initialization code
-        self.autoresizesSubviews = YES;
-        self.userInteractionEnabled = YES;
-        
-        [self addSubview:self.scrollView];
-        
-        CGRect rect = self.pageControl.frame;
-        rect.origin = CGPointMake(0, rect.size.height - 24.f);
-        rect.size = CGSizeMake(rect.size.width, 24.f);
-        self.pageControl.frame = rect;
-        [self addSubview:self.pageControl];
-        
-        _reusableViews = [[NSMutableArray alloc] initWithCapacity:16];
-        _visibleNumberOfViewsPerPage = 1;
-        _totalPages = 0;
-        _currentPage = 0;
-        
-        _allowScrollToPage = YES;
-        
-        self.pageMargin = 0.f;
-        self.pageSize = frame.size;
-        
-        /*
-         UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressGestureHandler:)];
-         longPress.numberOfTouchesRequired = 1;
-         longPress.minimumPressDuration = 0.05;
-         longPress.delaysTouchesBegan = NO;
-         longPress.delegate = self;
-         [self addGestureRecognizer:longPress];
-         [longPress release];
-         
-         _longPress = longPress;
-         */
-        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self
-                                                                              action:@selector(tapGestureHandler:)];
-        tap.numberOfTapsRequired = 1;
-        tap.numberOfTouchesRequired = 1;
-        
-        [self addGestureRecognizer:tap];
-        [tap release];
-        
-        
-        
-            //[self.scrollView.panGestureRecognizer requireGestureRecognizerToFail:longPress];
-        
-        [[NSNotificationCenter defaultCenter] addObserver:self 
-                                                 selector:@selector(didReceiveMemoryWarning:)
-                                                     name:UIApplicationDidReceiveMemoryWarningNotification
-                                                   object:nil];
+        [self commonInit];
     }
     return self;
 }
@@ -147,6 +146,14 @@ enum {
         _scrollView.delegate = self;
     }
     return _scrollView;
+}
+
+- (CGSize)pageSize
+{
+    if (CGSizeEqualToSize(_pageSize, CGSizeZero)) {
+        _pageSize = self.bounds.size;
+    }
+    return _pageSize;
 }
 
 - (void)setPageControlHidden:(BOOL)pageControlHidden animated:(BOOL)animated
@@ -214,9 +221,9 @@ enum {
 
 - (void)setPageSize:(CGSize)pageSize
 {
-    NSAssert(pageSize.width <= self.bounds.size.width, @"The page width should be smaller than view width");
+    NSAssert(0.f < pageSize.width && pageSize.width <= self.bounds.size.width, @"The page width should be smaller than view width");
     
-    if (!CGSizeEqualToSize(_pageSize, pageSize)) {
+    if (!CGSizeEqualToSize(self.pageSize, pageSize)) {
         _pageSize = pageSize;
         _scrollView.frame = CGRectMake((CGRectGetWidth(self.bounds)-_pageSize.width-_pageMargin)/2, 
                                        (CGRectGetHeight(self.bounds)-_pageSize.height)/2,
@@ -236,9 +243,9 @@ enum {
 {
     if (_pageMargin != pageMargin) {
         _pageMargin = pageMargin;
-        _scrollView.frame = CGRectMake((CGRectGetWidth(self.bounds)-_pageSize.width-_pageMargin)/2, 
-                                       (CGRectGetHeight(self.bounds)-_pageSize.height)/2,
-                                       _pageSize.width+_pageMargin,_pageSize.height);
+        _scrollView.frame = CGRectMake((CGRectGetWidth(self.bounds)-self.pageSize.width-_pageMargin)/2,
+                                       (CGRectGetHeight(self.bounds)-self.pageSize.height)/2,
+                                       self.pageSize.width+_pageMargin,self.pageSize.height);
         [self updateVisibalePages];
     }
 }
@@ -567,6 +574,8 @@ enum {
 @end
 
 
+#define PAGE_CONTROL_PADDING 8.0f
+
 @implementation RPageControll
 @synthesize title = _title;
 @synthesize dataSource = _dataSource;
@@ -582,6 +591,10 @@ enum {
     if (self) {
         self.autoresizesSubviews = YES;
         self.clipsToBounds = YES;
+        self.backgroundColor = [UIColor colorWithRed:0.f
+                                               green:0.f
+                                                blue:0.f
+                                               alpha:0.6f];
         
         _pageControl = [[UIPageControl alloc] initWithFrame:self.bounds];
         _pageControl.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
@@ -590,12 +603,14 @@ enum {
         _pageControl.userInteractionEnabled = YES;
         _pageControl.contentVerticalAlignment = UIControlContentVerticalAlignmentBottom;
         _pageControl.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+
         [_pageControl addTarget:self
                          action:@selector(onPageChanged:)
                forControlEvents:UIControlEventValueChanged];
         
         [self addSubview:_pageControl];
         [_pageControl release];
+        
     }
     return self;
 }
@@ -617,12 +632,7 @@ enum {
 - (void)setTitle:(NSString *)title
 {
     if (title && ![title isEqualToString:@""]) {
-        
         if (!_titleLabel) {
-            self.backgroundColor = [UIColor colorWithRed:0.f
-                                                   green:0.f
-                                                    blue:0.f
-                                                   alpha:0.6f];
             
             UILabel *label = [[UILabel alloc] initWithFrame:self.bounds];
             label.font = [UIFont systemFontOfSize:12];
@@ -632,16 +642,13 @@ enum {
             label.textColor = [UIColor whiteColor];
             label.backgroundColor = [UIColor clearColor];
             label.lineBreakMode = UILineBreakModeMiddleTruncation;
-            label.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleBottomMargin;
+            label.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
             [self addSubview:label];
             _titleLabel = label;
             [label release];
             
             self.titleAlignment = self.titleAlignment;
         }
-    }
-    else {
-        self.backgroundColor = [UIColor clearColor];
     }
     
     _titleLabel.text = title;
@@ -664,13 +671,13 @@ enum {
 {
     _pageControl.numberOfPages = numberOfPages;
     CGRect frame = _pageControl.frame;
-    frame.size.width = numberOfPages * 16 + 8;
+    frame.size.width = [_pageControl sizeForNumberOfPages:numberOfPages].width;
     switch (titleAlignment) {
         case RPageControllTitleAlignLeft:
-            frame.origin.x = self.bounds.size.width - frame.size.width;
+            frame.origin.x = self.bounds.size.width - frame.size.width - PAGE_CONTROL_PADDING;
             break;
         case RPageControllTitleAlignRight:
-            frame.origin.x = 0;
+            frame.origin.x = PAGE_CONTROL_PADDING;
         default:
             break;
     }
@@ -686,19 +693,20 @@ enum {
 {
     titleAlignment = _titleAlignment;
     CGRect frame = self.bounds;
-    frame.size.width = CGRectGetWidth(frame) - CGRectGetWidth(_pageControl.frame);
+    frame.size.width = CGRectGetWidth(frame) - CGRectGetWidth(_pageControl.frame) - PAGE_CONTROL_PADDING * 2;
     switch (titleAlignment) {
         case RPageControllTitleAlignLeft:
+            frame.origin.x = PAGE_CONTROL_PADDING;
             _titleLabel.frame = frame;
             _titleLabel.textAlignment = UITextAlignmentLeft;
-            _pageControl.frame = CGRectMake(CGRectGetWidth(self.frame)-CGRectGetWidth(_pageControl.frame),0,
+            _pageControl.frame = CGRectMake(CGRectGetWidth(self.frame)-CGRectGetWidth(_pageControl.frame)-PAGE_CONTROL_PADDING,0,
                                             CGRectGetWidth(_pageControl.frame), CGRectGetHeight(_pageControl.frame));
             break;
         case RPageControllTitleAlignRight:
-            frame.origin.x = CGRectGetWidth(_pageControl.frame);
+            frame.origin.x = CGRectGetWidth(_pageControl.frame)+PAGE_CONTROL_PADDING;
             _titleLabel.frame = frame;
             _titleLabel.textAlignment = UITextAlignmentRight;
-            _pageControl.frame = CGRectMake(0, 0, _pageControl.frame.size.width,
+            _pageControl.frame = CGRectMake(PAGE_CONTROL_PADDING, 0, _pageControl.frame.size.width,
                                             _pageControl.frame.size.height);
             break;
         default:
