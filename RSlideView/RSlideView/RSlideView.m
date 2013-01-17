@@ -280,7 +280,7 @@ enum {
     if (!view) {
         view = [self.dataSource RSlideView:self
                         viewForPageAtIndex:indexToLoad];
-        view.tag = index + kSubviewTagOffset;
+        view.tag = indexToLoad + kSubviewTagOffset;
         view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         [self.scrollView addSubview:view];
     }
