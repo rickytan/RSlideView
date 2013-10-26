@@ -52,8 +52,11 @@ enum {
     
     _reusableViews = [[NSMutableArray alloc] initWithCapacity:16];
     _visibleNumberOfViewsPerPage = 1;
+    _extraPagesForLoopShow = 1;
     _totalPages = 0;
     _currentPage = 0;
+    _pageMargin = 0.0f;
+    _pageSize = self.bounds.size;
     
     _allowScrollToPage = YES;
 
@@ -146,14 +149,6 @@ enum {
         _scrollView.delegate = self;
     }
     return _scrollView;
-}
-
-- (CGSize)pageSize
-{
-    if (CGSizeEqualToSize(_pageSize, CGSizeZero)) {
-        _pageSize = self.bounds.size;
-    }
-    return _pageSize;
 }
 
 - (void)setPageControlHidden:(BOOL)pageControlHidden animated:(BOOL)animated
