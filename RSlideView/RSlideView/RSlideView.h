@@ -62,6 +62,7 @@ typedef enum {
 - (void)RSlideView:(RSlideView *)slideView doubleTapOnPageAtIndex:(NSInteger)index;
 
 - (void)RSlideView:(RSlideView*)sliderView didScrollAtPageOffset:(CGFloat)pageOffset;
+- (void)RSlideViewDidEndScrollAnimation:(RSlideView *)sliderView;
 @end
 
 @protocol RSlideViewDataSource <NSObject>
@@ -98,11 +99,12 @@ UIGestureRecognizerDelegate> {
     NSInteger                   _selectedPageIndex;
 }
 
-@property (nonatomic, assign) id<RSlideViewDelegate> delegate;
-@property (nonatomic, assign) id<RSlideViewDataSource> dataSource;
+@property (nonatomic, assign) IBOutlet id<RSlideViewDelegate> delegate;
+@property (nonatomic, assign) IBOutlet id<RSlideViewDataSource> dataSource;
 
 @property (nonatomic, readonly) RPageControll *pageControl;
 @property (nonatomic, readonly) RScrollView *scrollView;
+@property (nonatomic, readonly) NSInteger currentPage;
 @property (nonatomic, assign, getter = isLoopSlide) BOOL loopSlide;
 @property (nonatomic, assign, getter = isContinuousScroll) BOOL continuousScroll;
 @property (nonatomic, assign, getter = isPageControlHidden) BOOL pageControlHidden;

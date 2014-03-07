@@ -545,6 +545,8 @@ enum {
             [self adjustScrollViewOffsetToSinglePage];
         }
     }
+    if ([self.delegate respondsToSelector:@selector(RSlideViewDidEndScrollAnimation:)])
+        [self.delegate RSlideViewDidEndScrollAnimation:self];
 }
 
 - (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView
@@ -556,6 +558,9 @@ enum {
     self.pageControl.currentPage = _currentPage;
     
     _allowScrollToPage = YES;
+
+    if ([self.delegate respondsToSelector:@selector(RSlideViewDidEndScrollAnimation:)])
+        [self.delegate RSlideViewDidEndScrollAnimation:self];
 }
 
 #pragma mark - UIGesture Delegate
@@ -717,7 +722,9 @@ enum {
 {
     for (UIView *view in self.subviews) {
         if (CGRectContainsPoint(view.frame, point))
-            return view;
+            return [view hitTest:[self convertPoint:point
+                                            toView:view]
+                       withEvent:event];
     }
     return self;
 }
