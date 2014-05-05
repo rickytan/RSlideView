@@ -698,14 +698,22 @@ enum {
         case RPageControllTitleAlignLeft:
             frame.origin.x = PAGE_CONTROL_PADDING;
             _titleLabel.frame = frame;
+#if __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_6_0
             _titleLabel.textAlignment = UITextAlignmentLeft;
+#else
+            _titleLabel.textAlignment = NSTextAlignmentLeft;
+#endif
             _pageControl.frame = CGRectMake(CGRectGetWidth(self.frame)-CGRectGetWidth(_pageControl.frame)-PAGE_CONTROL_PADDING,0,
                                             CGRectGetWidth(_pageControl.frame), CGRectGetHeight(_pageControl.frame));
             break;
         case RPageControllTitleAlignRight:
             frame.origin.x = CGRectGetWidth(_pageControl.frame)+PAGE_CONTROL_PADDING;
             _titleLabel.frame = frame;
+#if __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_6_0
             _titleLabel.textAlignment = UITextAlignmentRight;
+#else
+            _titleLabel.textAlignment = NSTextAlignmentRight;
+#endif
             _pageControl.frame = CGRectMake(PAGE_CONTROL_PADDING, 0, _pageControl.frame.size.width,
                                             _pageControl.frame.size.height);
             break;
@@ -721,12 +729,17 @@ enum {
 - (UIView*)hitTest:(CGPoint)point withEvent:(UIEvent *)event
 {
     for (UIView *view in self.subviews) {
-        if (CGRectContainsPoint(view.frame, point))
-            return [view hitTest:[self convertPoint:point
-                                            toView:view]
-                       withEvent:event];
+        if (CGRectContainsPoint(view.frame, point)) {
+            UIView *hitView = [view hitTest:[self convertPoint:point
+                                                        toView:view]
+                                  withEvent:event];
+            if (!hitView) {
+                hitView = view;
+            }
+            return hitView;
+        }
     }
-    return self;
+    return [super hitTest:point withEvent:event];
 }
 
 @end
