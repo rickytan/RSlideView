@@ -139,6 +139,7 @@ enum {
         _scrollView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
         _scrollView.pagingEnabled = YES;
         _scrollView.scrollEnabled = YES;
+        _scrollView.scrollsToTop = NO;
         _scrollView.clipsToBounds = NO;
         _scrollView.bounces = YES;
         _scrollView.backgroundColor = [UIColor clearColor];
