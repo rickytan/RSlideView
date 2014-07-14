@@ -87,6 +87,7 @@ UIGestureRecognizerDelegate> {
     NSInteger                   _extraPagesForLoopShow;
     
     BOOL                        _allowScrollToPage;
+
     
     NSMutableArray             *_reusableViews;
     

@@ -80,7 +80,7 @@ enum {
 - (void)awakeFromNib
 {
     [self commonInit];
-    [self reloadData];
+    //[self reloadData];
 }
 
 - (id)initWithFrame:(CGRect)frame
