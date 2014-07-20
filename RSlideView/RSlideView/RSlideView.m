@@ -76,18 +76,27 @@ enum {
                                                object:nil];
 
 }
-
+/*
 - (void)awakeFromNib
 {
     [self commonInit];
-    //[self reloadData];
+    [self reloadData];
 }
-
+*/
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     if (self) {
             // Initialization code
+        [self commonInit];
+    }
+    return self;
+}
+
+- (id)initWithCoder:(NSCoder *)aDecoder
+{
+    self = [super initWithCoder:aDecoder];
+    if (self) {
         [self commonInit];
     }
     return self;
