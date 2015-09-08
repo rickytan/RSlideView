@@ -21,6 +21,9 @@ enum {
 
 
 @interface RSlideView ()
+@property (nonatomic, strong) RPageControl *pageControl;
+@property (nonatomic, strong) UIScrollView *scrollView;
+
 - (void)loadNeededPages;
 - (void)loadViewOfPageAtIndex:(NSInteger)index;
 - (void)collectReusableViews;
@@ -35,13 +38,6 @@ enum {
 @end
 
 @implementation RSlideView
-@synthesize pageControl = _pageControl;
-@synthesize scrollView = _scrollView;
-@synthesize delegate = _delegate;
-@synthesize dataSource = _dataSource;
-@synthesize loopSlide = _loopSlide,continuousScroll = _continuousScroll,pageControlHidden = _pageControlHidden;
-@synthesize pageSize = _pageSize;
-@synthesize pageMargin = _pageMargin;
 
 - (void)dealloc
 {
@@ -67,6 +63,7 @@ enum {
     _reusableViews = [[NSMutableArray alloc] initWithCapacity:16];
 
     _allowScrollToPage = YES;
+    _pageControlHidden = YES;
 
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self
                                                                           action:@selector(tapGestureHandler:)];
@@ -146,23 +143,8 @@ enum {
            withAttributes:attri];
     }
 
-    if (!self.pageControlHidden) {
-        [[UIColor colorWithWhite:0 alpha:0.6] setFill];
-        [[UIBezierPath bezierPathWithRect:[self pageControlRectForBounds:rect]] fill];
-
-        [[UIColor colorWithWhite:1 alpha:0.8] setFill];
-        const CGFloat margin = 16.f;
-        const CGSize size = {7.f, 7.f};
-        const CGRect pageControlRect = [self pageControlRectForBounds:rect];
-        CGFloat x = pageControlRect.size.width - 16.f;
-        CGFloat y = pageControlRect.origin.y + pageControlRect.size.height / 2 - size.height / 2;
-        for (NSInteger i = 0; i < 3; ++i) {
-            [[UIBezierPath bezierPathWithRoundedRect:(CGRect){{x, y}, size}
-                                        cornerRadius:size.width / 2] fill];
-            x -= margin;
-        }
-    }
-
+    self.pageControl.numberOfPages = MIN(10, _extraPagesForLoopShow * 2 + 1);
+    self.pageControl.title = @"Page 0";
 }
 #endif
 
@@ -270,6 +252,16 @@ enum {
     return self.pageControl.titleAlignment;
 }
 
+- (void)setPageControlBackgroundColor:(UIColor *)pageControlBackgroundColor
+{
+    self.pageControl.backgroundColor = pageControlBackgroundColor;
+}
+
+- (UIColor *)pageControlBackgroundColor
+{
+    return self.pageControl.backgroundColor;
+}
+
 - (void)setDataSource:(id<RSlideViewDataSource>)dataSource
 {
     _dataSource = dataSource;
@@ -357,7 +349,7 @@ enum {
                         viewForPageAtIndex:indexToLoad];
         NSAssert(view, @"A RSlideView datasource must return a UIView!");
         view.tag = indexToLoad + kSubviewTagOffset;
-        //        view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        view.autoresizingMask = UIViewAutoresizingNone;
         [self.scrollView addSubview:view];
     }
     view.frame = CGRectMake(_pageMargin / 2 + size.width * index,
@@ -594,16 +586,6 @@ enum {
     self.pageControl.currentPage = _currentPage;
 }
 
-- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
-{
-
-}
-
-- (void)scrollViewWillBeginDecelerating:(UIScrollView *)scrollView
-{
-
-}
-
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView
                   willDecelerate:(BOOL)decelerate
 {
@@ -660,10 +642,7 @@ enum {
     if (self) {
         self.autoresizesSubviews = YES;
         self.clipsToBounds = YES;
-        self.backgroundColor = [UIColor colorWithRed:0.f
-                                               green:0.f
-                                                blue:0.f
-                                               alpha:0.6f];
+        self.backgroundColor = [UIColor colorWithWhite:0 alpha:0.6f];
 
         _pageControl = [[UIPageControl alloc] initWithFrame:self.bounds];
         _pageControl.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
@@ -688,6 +667,32 @@ enum {
     if (CGRectContainsPoint(self.bounds, point))
         return _pageControl;
     return nil;
+}
+
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+
+    [_pageControl sizeToFit];
+
+    CGRect frame = self.bounds;
+    frame.size.width = [_pageControl sizeForNumberOfPages:_pageControl.numberOfPages].width;
+
+    CGRect titleFrame = self.bounds;
+    titleFrame.size.width = CGRectGetWidth(self.bounds) - CGRectGetWidth(frame) - PAGE_CONTROL_PADDING * 2;
+    switch (_titleAlignment) {
+        case RPageControllTitleAlignLeft:
+            titleFrame.origin.x = PAGE_CONTROL_PADDING;
+            frame.origin.x = self.bounds.size.width - frame.size.width - PAGE_CONTROL_PADDING;
+            break;
+        case RPageControllTitleAlignRight:
+            titleFrame.origin.x = CGRectGetWidth(_pageControl.frame) + PAGE_CONTROL_PADDING;
+            frame.origin.x = PAGE_CONTROL_PADDING;
+        default:
+            break;
+    }
+    _titleLabel.frame = titleFrame;
+    _pageControl.frame = frame;
 }
 
 - (void)onPageChanged:(id)sender
@@ -745,18 +750,7 @@ enum {
 - (void)setNumberOfPages:(NSInteger)numberOfPages
 {
     _pageControl.numberOfPages = numberOfPages;
-    CGRect frame = _pageControl.frame;
-    frame.size.width = [_pageControl sizeForNumberOfPages:numberOfPages].width;
-    switch (_titleAlignment) {
-        case RPageControllTitleAlignLeft:
-            frame.origin.x = self.bounds.size.width - frame.size.width - PAGE_CONTROL_PADDING;
-            break;
-        case RPageControllTitleAlignRight:
-            frame.origin.x = PAGE_CONTROL_PADDING;
-        default:
-            break;
-    }
-    _pageControl.frame = frame;
+    [self setNeedsLayout];
 }
 
 - (NSInteger)numberOfPages
@@ -767,34 +761,26 @@ enum {
 - (void)setTitleAlignment:(RPageControlTitleAlignment)titleAlignment
 {
     _titleAlignment = titleAlignment;
-    CGRect frame = self.bounds;
-    frame.size.width = CGRectGetWidth(frame) - CGRectGetWidth(_pageControl.frame) - PAGE_CONTROL_PADDING * 2;
     switch (self.titleAlignment) {
         case RPageControllTitleAlignLeft:
-            frame.origin.x = PAGE_CONTROL_PADDING;
-            _titleLabel.frame = frame;
 #if __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_6_0
             _titleLabel.textAlignment = UITextAlignmentLeft;
 #else
             _titleLabel.textAlignment = NSTextAlignmentLeft;
 #endif
-            _pageControl.frame = CGRectMake(CGRectGetWidth(self.frame) - CGRectGetWidth(_pageControl.frame) - PAGE_CONTROL_PADDING, 0,
-                                            CGRectGetWidth(_pageControl.frame), CGRectGetHeight(_pageControl.frame));
             break;
         case RPageControllTitleAlignRight:
-            frame.origin.x = CGRectGetWidth(_pageControl.frame) + PAGE_CONTROL_PADDING;
-            _titleLabel.frame = frame;
 #if __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_6_0
             _titleLabel.textAlignment = UITextAlignmentRight;
 #else
             _titleLabel.textAlignment = NSTextAlignmentRight;
 #endif
-            _pageControl.frame = CGRectMake(PAGE_CONTROL_PADDING, 0, _pageControl.frame.size.width,
-                                            _pageControl.frame.size.height);
+
             break;
         default:
             break;
     }
+    [self setNeedsLayout];
 }
 
 @end

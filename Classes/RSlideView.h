@@ -97,16 +97,15 @@ UIGestureRecognizerDelegate> {
 
 @property (nonatomic, assign, getter = isLoopSlide) IBInspectable BOOL loopSlide;
 @property (nonatomic, assign, getter = isContinuousScroll) IBInspectable BOOL continuousScroll;
-@property (nonatomic, assign, getter = isPageControlHidden) IBInspectable BOOL pageControlHidden;
+@property (nonatomic, assign, getter = isPageControlHidden) IBInspectable BOOL pageControlHidden;   // Default YES
+@property (nonatomic, assign) IBInspectable UIColor *pageControlBackgroundColor;
 
-
-@property (nonatomic) IBInspectable CGSize pageSize;  // Default to be the RSlideView's size
+@property (nonatomic, assign) IBInspectable CGSize pageSize;  // Default to be the RSlideView's size
 
     // The Gap between two pages, default to be 0
-@property (nonatomic) IBInspectable CGFloat pageMargin;
+@property (nonatomic, assign) IBInspectable CGFloat pageMargin;
 
-
-@property (nonatomic, assign) RPageControlTitleAlignment pageTitleAlignment;
+@property (nonatomic, assign) IBInspectable RPageControlTitleAlignment pageTitleAlignment;
 
 - (void)reloadData;
 - (UIView*)dequeueReusableView;
