@@ -103,61 +103,61 @@ enum {
 }
 
 
-//#if TARGET_INTERFACE_BUILDER
- // Only override drawRect: if you perform custom drawing.
- // An empty implementation adversely affects performance during animation.
- - (void)drawRect:(CGRect)rect
- {
- // Drawing code
-     [self updateVisibalePages];
+#if TARGET_INTERFACE_BUILDER
+// Only override drawRect: if you perform custom drawing.
+// An empty implementation adversely affects performance during animation.
+- (void)drawRect:(CGRect)rect
+{
+    // Drawing code
+    [self updateVisibalePages];
 
-     CGSize size = CGSizeMake(_pageSize.width + _pageMargin, _pageSize.height);
+    CGSize size = CGSizeMake(_pageSize.width + _pageMargin, _pageSize.height);
 
-     CGRect scrollRect = CGRectMake((CGRectGetWidth(self.bounds) - _pageSize.width - _pageMargin) / 2,
-                                    (CGRectGetHeight(self.bounds) - _pageSize.height) / 2,
-                                    self.pageSize.width + _pageMargin, _pageSize.height);
+    CGRect scrollRect = CGRectMake((CGRectGetWidth(self.bounds) - _pageSize.width - _pageMargin) / 2,
+                                   (CGRectGetHeight(self.bounds) - _pageSize.height) / 2,
+                                   self.pageSize.width + _pageMargin, _pageSize.height);
 
-     NSDictionary *attri = @{NSFontAttributeName: [UIFont systemFontOfSize:13],
-                             NSForegroundColorAttributeName: [UIColor darkTextColor]};
+    NSDictionary *attri = @{NSFontAttributeName: [UIFont systemFontOfSize:13],
+                            NSForegroundColorAttributeName: [UIColor darkTextColor]};
 
-     NSInteger start = self.loopSlide ? -_extraPagesForLoopShow : 0;
-     for (NSInteger i = start; i <= _extraPagesForLoopShow; ++i) {
-         [[UIColor grayColor] setStroke];
-         [[UIColor colorWithWhite:0.9 alpha:1.0] setFill];
+    NSInteger start = self.loopSlide ? -_extraPagesForLoopShow : 0;
+    for (NSInteger i = start; i <= _extraPagesForLoopShow; ++i) {
+        [[UIColor grayColor] setStroke];
+        [[UIColor colorWithWhite:0.9 alpha:1.0] setFill];
 
-         CGRect rect = CGRectMake(_pageMargin / 2 + size.width * i,
-                                  (size.height - _pageSize.height) / 2,
-                                  _pageSize.width, _pageSize.height);
-         rect = CGRectOffset(rect, scrollRect.origin.x, scrollRect.origin.y);
-         UIBezierPath *path = [UIBezierPath bezierPathWithRect:rect];
-         [path stroke];
-         [path fill];
-         NSString *page = [NSString stringWithFormat:@"Page %s%ld", self.loopSlide && i < 0 ? "N" : "", i];
-         CGSize textSize = [page sizeWithAttributes:attri];
-         CGPoint textPoint = CGPointMake(CGRectGetMidX(rect) - textSize.width / 2, CGRectGetMidY(rect) - textSize.height / 2);
-         [page drawAtPoint:textPoint
-            withAttributes:attri];
-     }
+        CGRect rect = CGRectMake(_pageMargin / 2 + size.width * i,
+                                 (size.height - _pageSize.height) / 2,
+                                 _pageSize.width, _pageSize.height);
+        rect = CGRectOffset(rect, scrollRect.origin.x, scrollRect.origin.y);
+        UIBezierPath *path = [UIBezierPath bezierPathWithRect:rect];
+        [path stroke];
+        [path fill];
+        NSString *page = [NSString stringWithFormat:@"Page %s%ld", self.loopSlide && i < 0 ? "N" : "", i];
+        CGSize textSize = [page sizeWithAttributes:attri];
+        CGPoint textPoint = CGPointMake(CGRectGetMidX(rect) - textSize.width / 2, CGRectGetMidY(rect) - textSize.height / 2);
+        [page drawAtPoint:textPoint
+           withAttributes:attri];
+    }
 
-     if (!self.pageControlHidden) {
-         [[UIColor colorWithWhite:0 alpha:0.6] setFill];
-         [[UIBezierPath bezierPathWithRect:[self pageControlRectForBounds:rect]] fill];
+    if (!self.pageControlHidden) {
+        [[UIColor colorWithWhite:0 alpha:0.6] setFill];
+        [[UIBezierPath bezierPathWithRect:[self pageControlRectForBounds:rect]] fill];
 
-         [[UIColor colorWithWhite:1 alpha:0.8] setFill];
-         const CGFloat margin = 16.f;
-         const CGSize size = {7.f, 7.f};
-         const CGRect pageControlRect = [self pageControlRectForBounds:rect];
-         CGFloat x = pageControlRect.size.width - 16.f;
-         CGFloat y = pageControlRect.origin.y + pageControlRect.size.height / 2 - size.height / 2;
-         for (NSInteger i = 0; i < 3; ++i) {
-             [[UIBezierPath bezierPathWithRoundedRect:(CGRect){{x, y}, size}
-                                         cornerRadius:size.width / 2] fill];
-             x -= margin;
-         }
-     }
+        [[UIColor colorWithWhite:1 alpha:0.8] setFill];
+        const CGFloat margin = 16.f;
+        const CGSize size = {7.f, 7.f};
+        const CGRect pageControlRect = [self pageControlRectForBounds:rect];
+        CGFloat x = pageControlRect.size.width - 16.f;
+        CGFloat y = pageControlRect.origin.y + pageControlRect.size.height / 2 - size.height / 2;
+        for (NSInteger i = 0; i < 3; ++i) {
+            [[UIBezierPath bezierPathWithRoundedRect:(CGRect){{x, y}, size}
+                                        cornerRadius:size.width / 2] fill];
+            x -= margin;
+        }
+    }
 
- }
-//#endif
+}
+#endif
 
 - (CGRect)pageControlRectForBounds:(CGRect)rect
 {
@@ -218,6 +218,7 @@ enum {
         _scrollView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
         _scrollView.pagingEnabled = YES;
         _scrollView.scrollEnabled = YES;
+        _scrollView.scrollsToTop = NO;
         _scrollView.clipsToBounds = NO;
         _scrollView.bounces = YES;
         _scrollView.backgroundColor = [UIColor clearColor];
@@ -698,14 +699,14 @@ enum {
             label.font = [UIFont systemFontOfSize:12];
             label.numberOfLines = 1;
             label.adjustsFontSizeToFitWidth = YES;
-#if __IPHONE_OS_VERSION_MAX_ALLOWED < 60000
+#if __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_6_0
             label.minimumFontSize = 10;
 #else
             label.minimumScaleFactor = 10;
 #endif
             label.textColor = [UIColor whiteColor];
             label.backgroundColor = [UIColor clearColor];
-#if __IPHONE_OS_VERSION_MAX_ALLOWED < 60000
+#if __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_6_0
             label.lineBreakMode = UILineBreakModeMiddleTruncation;
 #else
             label.lineBreakMode = NSLineBreakByTruncatingMiddle;
@@ -765,7 +766,7 @@ enum {
         case RPageControllTitleAlignLeft:
             frame.origin.x = PAGE_CONTROL_PADDING;
             _titleLabel.frame = frame;
-#if __IPHONE_OS_VERSION_MAX_ALLOWED < 60000
+#if __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_6_0
             _titleLabel.textAlignment = UITextAlignmentLeft;
 #else
             _titleLabel.textAlignment = NSTextAlignmentLeft;
@@ -776,7 +777,7 @@ enum {
         case RPageControllTitleAlignRight:
             frame.origin.x = CGRectGetWidth(_pageControl.frame) + PAGE_CONTROL_PADDING;
             _titleLabel.frame = frame;
-#if __IPHONE_OS_VERSION_MAX_ALLOWED < 60000
+#if __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_6_0
             _titleLabel.textAlignment = UITextAlignmentRight;
 #else
             _titleLabel.textAlignment = NSTextAlignmentRight;
