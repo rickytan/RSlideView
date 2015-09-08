@@ -56,7 +56,14 @@ enum {
 
     [self addSubview:self.scrollView];
     [self addSubview:self.pageControl];
+    
+    _pageMargin = 0.0f;
+    _pageSize = self.bounds.size;
 
+    _visibleNumberOfViewsPerPage = 1;
+    _extraPagesForLoopShow = 1;
+    _totalPages = 0;
+    _currentPage = 0;
     _reusableViews = [[NSMutableArray alloc] initWithCapacity:16];
 
     _allowScrollToPage = YES;
@@ -75,23 +82,20 @@ enum {
 
 }
 
-- (void)awakeFromNib
-{
-    [self commonInit];
-}
-
 - (instancetype)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code
-        _pageMargin = 0.0f;
-        _pageSize = self.bounds.size;
+        [self commonInit];
+    }
+    return self;
+}
 
-        _visibleNumberOfViewsPerPage = 1;
-        _extraPagesForLoopShow = 1;
-        _totalPages = 0;
-        _currentPage = 0;
+- (instancetype)initWithCoder:(NSCoder *)aDecoder
+{
+    self = [super initWithCoder:aDecoder];
+    if (self) {
         [self commonInit];
     }
     return self;
@@ -109,6 +113,9 @@ enum {
 - (void)drawRect:(CGRect)rect
 {
     // Drawing code
+    if (CGSizeEqualToSize(_pageSize, CGSizeZero)) {
+        _pageSize = self.bounds.size;
+    }
     [self updateVisibalePages];
 
     CGSize size = CGSizeMake(_pageSize.width + _pageMargin, _pageSize.height);
