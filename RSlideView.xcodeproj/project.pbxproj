@@ -16,7 +16,6 @@
 		9CB6D95D1530B9B5008EA35E /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CB6D95C1530B9B5008EA35E /* AppDelegate.m */; };
 		9CB6D9601530B9B5008EA35E /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CB6D95F1530B9B5008EA35E /* ViewController.m */; };
 		9CB6D9631530B9B5008EA35E /* ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9CB6D9611530B9B5008EA35E /* ViewController.xib */; };
-		9CB6D96D1530BA0D008EA35E /* RSlideView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CB6D96C1530BA0D008EA35E /* RSlideView.m */; };
 		9CB6D9711530BD21008EA35E /* 1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 9CB6D96E1530BD21008EA35E /* 1.jpg */; };
 		9CB6D9721530BD21008EA35E /* 2.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 9CB6D96F1530BD21008EA35E /* 2.jpg */; };
 		9CB6D9731530BD21008EA35E /* 0.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 9CB6D9701530BD21008EA35E /* 0.jpg */; };
@@ -24,6 +23,8 @@
 		9CE4FFDD1532666D00E05856 /* 4.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 9CE4FFD91532666D00E05856 /* 4.jpg */; };
 		9CE4FFDE1532666D00E05856 /* 5.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 9CE4FFDA1532666D00E05856 /* 5.jpg */; };
 		9CE4FFDF1532666D00E05856 /* 6.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 9CE4FFDB1532666D00E05856 /* 6.jpg */; };
+		9CEF71CB1B9E6C4200D1A0B9 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9CEF71CA1B9E6C4200D1A0B9 /* Images.xcassets */; };
+		9CEF71D01B9E6C5A00D1A0B9 /* RSlideView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CEF71CF1B9E6C5A00D1A0B9 /* RSlideView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -41,9 +42,6 @@
 		9CB6D95E1530B9B5008EA35E /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
 		9CB6D95F1530B9B5008EA35E /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		9CB6D9621530B9B5008EA35E /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/ViewController.xib; sourceTree = "<group>"; };
-		9CB6D96A1530BA0D008EA35E /* RSlideView+PrivateMethods.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RSlideView+PrivateMethods.h"; sourceTree = "<group>"; };
-		9CB6D96B1530BA0D008EA35E /* RSlideView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSlideView.h; sourceTree = "<group>"; };
-		9CB6D96C1530BA0D008EA35E /* RSlideView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RSlideView.m; sourceTree = "<group>"; };
 		9CB6D96E1530BD21008EA35E /* 1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 1.jpg; sourceTree = "<group>"; };
 		9CB6D96F1530BD21008EA35E /* 2.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 2.jpg; sourceTree = "<group>"; };
 		9CB6D9701530BD21008EA35E /* 0.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 0.jpg; sourceTree = "<group>"; };
@@ -51,6 +49,9 @@
 		9CE4FFD91532666D00E05856 /* 4.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 4.jpg; sourceTree = "<group>"; };
 		9CE4FFDA1532666D00E05856 /* 5.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 5.jpg; sourceTree = "<group>"; };
 		9CE4FFDB1532666D00E05856 /* 6.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 6.jpg; sourceTree = "<group>"; };
+		9CEF71CA1B9E6C4200D1A0B9 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		9CEF71CE1B9E6C5A00D1A0B9 /* RSlideView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSlideView.h; sourceTree = "<group>"; };
+		9CEF71CF1B9E6C5A00D1A0B9 /* RSlideView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RSlideView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,6 +100,8 @@
 		9CB6D9521530B9B5008EA35E /* RSlideView */ = {
 			isa = PBXGroup;
 			children = (
+				9CEF71CC1B9E6C5A00D1A0B9 /* Classes */,
+				9CEF71CA1B9E6C4200D1A0B9 /* Images.xcassets */,
 				9CB6D9701530BD21008EA35E /* 0.jpg */,
 				9CB6D96E1530BD21008EA35E /* 1.jpg */,
 				9CB6D96F1530BD21008EA35E /* 2.jpg */,
@@ -108,7 +111,6 @@
 				9CE4FFDB1532666D00E05856 /* 6.jpg */,
 				9CB6D95B1530B9B5008EA35E /* AppDelegate.h */,
 				9CB6D95C1530B9B5008EA35E /* AppDelegate.m */,
-				9CB6D9691530BA0D008EA35E /* RSlideView */,
 				9CB6D9531530B9B5008EA35E /* Supporting Files */,
 				9CB6D95E1530B9B5008EA35E /* ViewController.h */,
 				9CB6D95F1530B9B5008EA35E /* ViewController.m */,
@@ -128,15 +130,14 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		9CB6D9691530BA0D008EA35E /* RSlideView */ = {
+		9CEF71CC1B9E6C5A00D1A0B9 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				9CB6D96A1530BA0D008EA35E /* RSlideView+PrivateMethods.h */,
-				9CB6D96B1530BA0D008EA35E /* RSlideView.h */,
-				9CB6D96C1530BA0D008EA35E /* RSlideView.m */,
+				9CEF71CE1B9E6C5A00D1A0B9 /* RSlideView.h */,
+				9CEF71CF1B9E6C5A00D1A0B9 /* RSlideView.m */,
 			);
-			path = RSlideView;
-			sourceTree = "<group>";
+			path = Classes;
+			sourceTree = SOURCE_ROOT;
 		};
 /* End PBXGroup section */
 
@@ -164,7 +165,7 @@
 		9CB6D93F1530B9B5008EA35E /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0420;
+				LastUpgradeCheck = 0640;
 			};
 			buildConfigurationList = 9CB6D9421530B9B5008EA35E /* Build configuration list for PBXProject "RSlideView" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -189,6 +190,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9CB6D9571530B9B5008EA35E /* InfoPlist.strings in Resources */,
+				9CEF71CB1B9E6C4200D1A0B9 /* Images.xcassets in Resources */,
 				9CB6D9631530B9B5008EA35E /* ViewController.xib in Resources */,
 				9CB6D9711530BD21008EA35E /* 1.jpg in Resources */,
 				9CB6D9721530BD21008EA35E /* 2.jpg in Resources */,
@@ -208,9 +210,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				9CB6D9591530B9B5008EA35E /* main.m in Sources */,
+				9CEF71D01B9E6C5A00D1A0B9 /* RSlideView.m in Sources */,
 				9CB6D95D1530B9B5008EA35E /* AppDelegate.m in Sources */,
 				9CB6D9601530B9B5008EA35E /* ViewController.m in Sources */,
-				9CB6D96D1530BA0D008EA35E /* RSlideView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -240,11 +242,19 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -252,10 +262,15 @@
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -264,13 +279,25 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
@@ -282,6 +309,9 @@
 		9CB6D9671530B9B5008EA35E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_ENABLE_OBJC_ARC = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "RSlideView/RSlideView-Prefix.pch";
 				INFOPLIST_FILE = "RSlideView/RSlideView-Info.plist";
@@ -293,6 +323,9 @@
 		9CB6D9681530B9B5008EA35E /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_ENABLE_OBJC_ARC = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "RSlideView/RSlideView-Prefix.pch";
 				INFOPLIST_FILE = "RSlideView/RSlideView-Info.plist";

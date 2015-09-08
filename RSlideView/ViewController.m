@@ -9,8 +9,25 @@
 #import "ViewController.h"
 #import <QuartzCore/QuartzCore.h>
 
+@interface ViewController ()
+<RSlideViewDelegate,RSlideViewDataSource>
+
+@property (nonatomic, weak) IBOutlet UISlider *heightSlider;
+@property (nonatomic, weak) IBOutlet UISlider *pageWidthSlider;
+@property (nonatomic, weak) IBOutlet RSlideView *slideView;
+
+- (IBAction)onPrev:(id)sender;
+- (IBAction)onNext:(id)sender;
+- (IBAction)onPageWidth:(id)sender;
+- (IBAction)onPageHeight:(id)sender;
+- (IBAction)onPageMargin:(id)sender;
+- (IBAction)onLoopscroll:(id)sender;
+- (IBAction)onContinuousscroll:(id)sender;
+- (IBAction)onTitleAlignment:(id)sender;
+
+@end
+
 @implementation ViewController
-@synthesize heightSlider;
 
 - (void)didReceiveMemoryWarning
 {
@@ -24,16 +41,20 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
-    slideView = [[RSlideView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 160)];
-    slideView.delegate = self;
-    slideView.dataSource = self;
-    [self.view addSubview:slideView];
-    [slideView release];
     
-    [slideView setPageControlHidden:NO
+    [self.slideView setPageControlHidden:NO
                            animated:YES];
+    [self.slideView reloadData];
+    
     CGAffineTransform trans = CGAffineTransformMakeRotation(-M_PI_2);
     self.heightSlider.transform = trans;
+
+}
+
+- (void)viewDidLayoutSubviews
+{
+    [super viewDidLayoutSubviews];
+    self.pageWidthSlider.maximumValue = self.view.bounds.size.width;
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -49,75 +70,75 @@
     return 7;
 }
 
-- (UIView*)RSlideView:(RSlideView *)_slideView 
+- (UIView*)RSlideView:(RSlideView *)slideView
     viewForPageAtIndex:(NSInteger)index
 {
     UIImageView *image = (UIImageView*)[_slideView dequeueReusableView];
     if (!image) {
-        image = [[[UIImageView alloc] initWithFrame:_slideView.bounds] autorelease];
-
+        image = [[UIImageView alloc] initWithFrame:_slideView.bounds];
+        image.contentMode = UIViewContentModeScaleToFill;
     }
-    image.image = [UIImage imageNamed:[NSString stringWithFormat:@"%d.jpg",index]];
+    image.image = [UIImage imageNamed:[NSString stringWithFormat:@"%ld.jpg",index]];
     return image;
 }
 
 - (NSString*)RSlideView:(RSlideView *)slideView titleForPageAtIndex:(NSInteger)index
 {
-    return [NSString stringWithFormat:@"Title for %d",index];
+    return [NSString stringWithFormat:@"Title for %ld",index];
 }
 
 #pragma mark - RSlideView Delegate
 
 - (void)RSlideView:(RSlideView *)_slideView tapOnPageAtIndex:(NSInteger)index
 {
-    [[[[UIAlertView alloc] initWithTitle:@"Click"
-                                 message:[NSString stringWithFormat:@"You tapped on index %d",index]
+    [[[UIAlertView alloc] initWithTitle:@"Click"
+                                 message:[NSString stringWithFormat:@"You tapped on index %ld",index]
                                 delegate:nil
                        cancelButtonTitle:@"OK"
-                       otherButtonTitles:nil] autorelease] show];
+                       otherButtonTitles:nil] show];
 }
 
 - (IBAction)onPrev:(id)sender
 {
-    [slideView previousPage];
+    [self.slideView previousPage];
 }
 
 - (IBAction)onNext:(id)sender
 {
-    [slideView nextPage];
+    [self.slideView nextPage];
 }
 
 - (IBAction)onPageWidth:(UISlider*)slider
 {
-    CGSize size = slideView.pageSize;
+    CGSize size = self.slideView.pageSize;
     size.width = slider.value;
-    slideView.pageSize = size;
+    self.slideView.pageSize = size;
 }
 
 - (IBAction)onPageHeight:(UISlider*)slider
 {
-    CGSize size = slideView.pageSize;
+    CGSize size = self.slideView.pageSize;
     size.height = slider.value;
-    slideView.pageSize = size;
+    self.slideView.pageSize = size;
 }
 
 - (IBAction)onPageMargin:(UISlider*)slider
 {
-    slideView.pageMargin = slider.value;
+    self.slideView.pageMargin = slider.value;
 }
 
 - (IBAction)onLoopscroll:(UISwitch*)sender
 {
-    slideView.loopSlide = sender.on;
+    self.slideView.loopSlide = sender.on;
 }
 
 - (IBAction)onContinuousscroll:(UISwitch*)sender
 {
-    slideView.continuousScroll = sender.on;
+    self.slideView.continuousScroll = sender.on;
 }
 
 - (IBAction)onTitleAlignment:(UISwitch*)sender
 {
-    [slideView setPageTitleAlignment:sender.on?RPageControllTitleAlignRight:RPageControllTitleAlignLeft];
+    [self.slideView setPageTitleAlignment:sender.on ? RPageControllTitleAlignRight:RPageControllTitleAlignLeft];
 }
 @end

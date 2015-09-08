@@ -9,41 +9,37 @@
 #import <UIKit/UIKit.h>
 
 @class RSlideView;
-@class RPageControll;
+@class RPageControl;
 
+@protocol RPageControlDelegate, RPageControlDataSource;
 
-@protocol RPageControllDataSource <NSObject>
+@protocol RPageControlDataSource <NSObject>
 @optional
-- (NSString*)RPageControllTitleForPage:(NSInteger)index;
+- (NSString*)pageControlTitleForPage:(NSInteger)index;
 
 @end
 
-@protocol RPageControllDelegate <NSObject>
+@protocol RPageControlDelegate <NSObject>
 @optional
-- (void)RPageControllDidChangePage:(RPageControll*)pageControl;
+- (void)pageControlDidChangePage:(RPageControl*)pageControl;
 
 @end
 
-typedef enum {
+typedef NS_ENUM(NSInteger, RPageControlTitleAlignment) {
     RPageControllTitleAlignLeft = 0,
     RPageControllTitleAlignRight
-}RPageControlTitleAlignment;
+};
 
-@interface RPageControll : UIView {
+@interface RPageControl : UIView {
 @private
     UILabel                     *_titleLabel;
     UIPageControl               *_pageControl;
 }
 
-@property (nonatomic, assign) NSString *title;
-@property (nonatomic, assign) id<RPageControllDataSource> dataSource;
-@property (nonatomic, assign) id<RPageControllDelegate> delegate;
+@property (nonatomic, strong) NSString *title;
+@property (nonatomic, weak) id<RPageControlDataSource> dataSource;
+@property (nonatomic, weak) id<RPageControlDelegate> delegate;
 @property (nonatomic, assign) RPageControlTitleAlignment titleAlignment;
-@property (nonatomic, assign) CGFloat dotMargin;
-@property (nonatomic, assign) CGFloat dotRadius;
-@property (nonatomic, assign) CGFloat highlightedDotRadius;
-@property (nonatomic, retain) UIImage *dotImage;
-@property (nonatomic, retain) UIImage *highlightedDotImage;
 @property (nonatomic, assign) NSInteger numberOfPages;
 @property (nonatomic, assign) NSInteger currentPage;
 
@@ -51,9 +47,6 @@ typedef enum {
 - (void)setNumberOfPages:(NSInteger)numberOfPages;
 - (void)setCurrentPage:(NSInteger)currentPage;
 
-@end
-
-@interface RScrollView : UIScrollView
 @end
 
 @protocol RSlideViewDelegate <NSObject>
@@ -70,15 +63,16 @@ typedef enum {
 - (NSInteger)RSlideViewNumberOfPages;
 - (UIView*)RSlideView:(RSlideView*)slideView 
     viewForPageAtIndex:(NSInteger)index;
+
 @optional
 - (NSString*)RSlideView:(RSlideView*)slideView titleForPageAtIndex:(NSInteger)index;
 @end
 
-
+IB_DESIGNABLE
 @interface RSlideView : UIView 
 <UIScrollViewDelegate,
-RPageControllDataSource,
-RPageControllDelegate,
+RPageControlDataSource,
+RPageControlDelegate,
 UIGestureRecognizerDelegate> {
     NSInteger                   _totalPages;
     NSInteger                   _currentPage;
@@ -90,28 +84,28 @@ UIGestureRecognizerDelegate> {
     
     NSMutableArray             *_reusableViews;
     
-    UILongPressGestureRecognizer *_longPress;
-    
-    RScrollView                *_scrollView;
-    RPageControll              *_pageControl;
-    
-    UIView                     *_highlightedView;
     NSInteger                   _selectedPageIndex;
 }
 
-@property (nonatomic, assign) IBOutlet id<RSlideViewDelegate> delegate;
-@property (nonatomic, assign) IBOutlet id<RSlideViewDataSource> dataSource;
+@property (nonatomic, weak) IBOutlet id<RSlideViewDelegate> delegate;
+@property (nonatomic, weak) IBOutlet id<RSlideViewDataSource> dataSource;
 
-@property (nonatomic, readonly) RPageControll *pageControl;
-@property (nonatomic, readonly) RScrollView *scrollView;
-@property (nonatomic, readonly) NSInteger currentPage;
-@property (nonatomic, assign, getter = isLoopSlide) BOOL loopSlide;
-@property (nonatomic, assign, getter = isContinuousScroll) BOOL continuousScroll;
-@property (nonatomic, assign, getter = isPageControlHidden) BOOL pageControlHidden;
-@property (nonatomic) CGSize pageSize;  // Default to be the RSlideView's size
+@property (nonatomic, readonly, strong) RPageControl * pageControl;
+@property (nonatomic, readonly, strong) UIScrollView * scrollView;
+@property (nonatomic, readonly, assign) NSInteger      currentPage;
+
+@property (nonatomic, assign, getter = isLoopSlide) IBInspectable BOOL loopSlide;
+@property (nonatomic, assign, getter = isContinuousScroll) IBInspectable BOOL continuousScroll;
+@property (nonatomic, assign, getter = isPageControlHidden) IBInspectable BOOL pageControlHidden;
+
+
+@property (nonatomic) IBInspectable CGSize pageSize;  // Default to be the RSlideView's size
 
     // The Gap between two pages, default to be 0
-@property (nonatomic) CGFloat pageMargin;
+@property (nonatomic) IBInspectable CGFloat pageMargin;
+
+
+@property (nonatomic, assign) RPageControlTitleAlignment pageTitleAlignment;
 
 - (void)reloadData;
 - (UIView*)dequeueReusableView;
@@ -125,6 +119,7 @@ UIGestureRecognizerDelegate> {
 
 - (void)setPageControlHidden:(BOOL)pageControlHidden 
                     animated:(BOOL)animated;
-- (void)setPageTitleAlignment:(RPageControlTitleAlignment)align;
+
+- (CGRect)pageControlRectForBounds:(CGRect)rect;
 @end
 
