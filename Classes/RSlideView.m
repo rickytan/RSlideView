@@ -173,6 +173,7 @@ enum {
         [self collectReusableViews];
     }
     [self updateContentSize];
+    self.scrollView.contentOffset = CGPointMake(_scrollView.frame.size.width * _currentPage, 0);
 }
 
 - (UIView*)hitTest:(CGPoint)point withEvent:(UIEvent *)event
@@ -294,6 +295,15 @@ enum {
 
     if (!CGSizeEqualToSize(self.pageSize, pageSize)) {
         _pageSize = pageSize;
+        [self updateVisibalePages];
+        [self setNeedsLayout];
+    }
+}
+
+- (void)setBounds:(CGRect)bounds
+{
+    [super setBounds:bounds];
+    if (!CGSizeEqualToSize(bounds.size, _pageSize)) {
         [self updateVisibalePages];
         [self setNeedsLayout];
     }
@@ -458,11 +468,8 @@ enum {
     self.pageControl.numberOfPages = _totalPages;
     self.pageControl.currentPage = _currentPage;
 
-    [self updateContentSize];
-
-    self.scrollView.contentOffset = CGPointMake(_scrollView.frame.size.width * _currentPage, 0);
-
     [self loadNeededPages];
+    [self setNeedsLayout];
 }
 
 - (UIView*)dequeueReusableView
@@ -551,6 +558,9 @@ enum {
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
+    if (!scrollView.isDragging && !scrollView.isDecelerating)
+        return;
+    
     CGFloat halfWidth = _scrollView.frame.size.width / 2.f;
     CGFloat offset = scrollView.contentOffset.x;
 
