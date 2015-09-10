@@ -75,7 +75,7 @@
 {
     UIImageView *image = (UIImageView*)[_slideView dequeueReusableView];
     if (!image) {
-        image = [[UIImageView alloc] initWithFrame:_slideView.bounds];
+        image = [[UIImageView alloc] initWithFrame:(CGRect){{0, 0}, _slideView.pageSize}];
         image.contentMode = UIViewContentModeScaleToFill;
     }
     image.image = [UIImage imageNamed:[NSString stringWithFormat:@"%ld.jpg",index]];

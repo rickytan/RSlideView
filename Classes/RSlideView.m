@@ -358,13 +358,16 @@ enum {
         view = [self.dataSource RSlideView:self
                         viewForPageAtIndex:indexToLoad];
         NSAssert(view, @"A RSlideView datasource must return a UIView!");
-        view.tag = indexToLoad + kSubviewTagOffset;
+        view.tag = index + kSubviewTagOffset;
         view.autoresizingMask = UIViewAutoresizingNone;
         [self.scrollView addSubview:view];
     }
+    BOOL animations = [UIView areAnimationsEnabled];
+    [UIView setAnimationsEnabled:NO];
     view.frame = CGRectMake(_pageMargin / 2 + size.width * index,
                             (size.height - _pageSize.height) / 2,
                             _pageSize.width, _pageSize.height);
+    [UIView setAnimationsEnabled:animations];
 }
 
 - (void)collectReusableViews
@@ -404,10 +407,16 @@ enum {
     if (CGSizeEqualToSize(_pageSize, CGSizeZero))
         return;
 
-    _visibleNumberOfViewsPerPage = floorf((CGRectGetWidth(self.bounds) - _pageSize.width - _pageMargin) / (2 * (_pageSize.width + _pageMargin))) * 2 + 1;
-    _extraPagesForLoopShow = ceilf(self.bounds.size.width / (2 * (_pageMargin + _pageSize.width)));
+    CGFloat w = 2 * (_pageSize.width + _pageMargin);
+    NSInteger visiblePages = floorf((CGRectGetWidth(self.bounds) - _pageSize.width - _pageMargin) / w) * 2 + 1;
+    NSInteger extraPageToLoad = ceilf(CGRectGetWidth(self.bounds) / w);
 
-    [self reloadData];
+    if (visiblePages != _visibleNumberOfViewsPerPage || extraPageToLoad != _extraPagesForLoopShow) {
+        _visibleNumberOfViewsPerPage = visiblePages;
+        _extraPagesForLoopShow = extraPageToLoad;
+        [self collectReusableViews];
+    }
+    [self loadNeededPages];
 }
 
 - (void)updateContentSize
@@ -476,13 +485,9 @@ enum {
 {
     UIView *reuse = nil;
     @synchronized(self) {
-        @try {
-            reuse = [_reusableViews lastObject];
+        reuse = [_reusableViews lastObject];
+        if (reuse)
             [_reusableViews removeLastObject];
-        }
-        @catch (NSException *exception) {
-            //
-        }
     }
 
     return reuse;
@@ -587,9 +592,9 @@ enum {
             _currentPage = 0;
             offset.x -= _scrollView.frame.size.width * _totalPages;
         }
-        //self.scrollView.delegate = nil;
+        self.scrollView.delegate = nil;
         self.scrollView.contentOffset = offset;
-        //self.scrollView.delegate = self;
+        self.scrollView.delegate = self;
         [self collectReusableViews];
         [self loadNeededPages];
     }
