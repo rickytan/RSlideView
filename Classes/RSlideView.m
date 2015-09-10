@@ -354,7 +354,9 @@ enum {
 
     CGSize size = CGSizeMake(_pageSize.width + _pageMargin, _pageSize.height);
     UIView *view = [self viewOfPageAtIndex:index];
+    BOOL shouldDisableAnimations = NO;
     if (!view) {
+        shouldDisableAnimations = YES;
         view = [self.dataSource RSlideView:self
                         viewForPageAtIndex:indexToLoad];
         NSAssert(view, @"A RSlideView datasource must return a UIView!");
@@ -363,7 +365,7 @@ enum {
         [self.scrollView addSubview:view];
     }
     BOOL animations = [UIView areAnimationsEnabled];
-    [UIView setAnimationsEnabled:NO];
+    [UIView setAnimationsEnabled:!shouldDisableAnimations];
     view.frame = CGRectMake(_pageMargin / 2 + size.width * index,
                             (size.height - _pageSize.height) / 2,
                             _pageSize.width, _pageSize.height);
