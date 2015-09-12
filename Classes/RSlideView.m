@@ -23,6 +23,7 @@ enum {
 @interface RSlideView ()
 @property (nonatomic, strong) RPageControl *pageControl;
 @property (nonatomic, strong) UIScrollView *scrollView;
+@property (nonatomic, assign) BOOL shouldLoad;
 
 - (void)loadNeededPages;
 - (void)loadViewOfPageAtIndex:(NSInteger)index;
@@ -529,6 +530,7 @@ enum {
     if (_allowScrollToPage) {
         _allowScrollToPage = NO;
         //index = (index - index / _totalPages * _totalPages + _totalPages) % _totalPages;
+        self.shouldLoad = YES;
         [self.scrollView setContentOffset:CGPointMake(_scrollView.frame.size.width*index, 0)
                                  animated:YES];
     }
@@ -536,6 +538,7 @@ enum {
 
 - (void)scrollToPageOffset:(CGFloat)pageOffset
 {
+    self.shouldLoad = YES;
     CGPoint offset = CGPointMake(pageOffset*_scrollView.frame.size.width, 0);
     self.scrollView.contentOffset = offset;
 }
@@ -565,7 +568,7 @@ enum {
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    if (!scrollView.isDragging && !scrollView.isDecelerating)
+    if (!self.shouldLoad && !scrollView.isDragging && !scrollView.isDecelerating)
         return;
     
     CGFloat halfWidth = _scrollView.frame.size.width / 2.f;
@@ -611,6 +614,9 @@ enum {
             [self adjustScrollViewOffsetToSinglePage];
         }
     }
+    if (!decelerate) {
+        self.shouldLoad = NO;
+    }
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
@@ -622,6 +628,8 @@ enum {
     }
     if ([self.delegate respondsToSelector:@selector(RSlideViewDidEndScrollAnimation:)])
         [self.delegate RSlideViewDidEndScrollAnimation:self];
+
+    self.shouldLoad = NO;
 }
 
 - (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView
@@ -636,6 +644,8 @@ enum {
 
     if ([self.delegate respondsToSelector:@selector(RSlideViewDidEndScrollAnimation:)])
         [self.delegate RSlideViewDidEndScrollAnimation:self];
+
+    self.shouldLoad = NO;
 }
 
 #pragma mark - UIGesture Delegate
