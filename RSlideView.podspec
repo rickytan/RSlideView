@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = 'RSlideView'
-  s.version      = '1.0.5'
+  s.version      = '1.0.6'
   s.authors      = { 'Ricky Tan' => 'ricky.tan.xin@gmail.com' }
   s.homepage     = 'https://github.com/rickytan/RSlideView'
   s.platform     = :ios

@@ -39,6 +39,9 @@ enum {
 @end
 
 @implementation RSlideView
+{
+    BOOL        _setFromOutside;
+}
 
 - (void)dealloc
 {
@@ -292,9 +295,12 @@ enum {
 
 - (void)setPageSize:(CGSize)pageSize
 {
-    NSAssert(0.f < pageSize.width && pageSize.width <= self.bounds.size.width, @"The page width should be smaller than view width");
+    if (!(0.f < pageSize.width && pageSize.width <= self.bounds.size.width)) {
+        NSLog(@"The page width should be smaller than view width");
+    }
 
     if (!CGSizeEqualToSize(self.pageSize, pageSize)) {
+        _setFromOutside = YES;
         _pageSize = pageSize;
         [self updateVisibalePages];
         [self setNeedsLayout];
@@ -305,6 +311,9 @@ enum {
 {
     [super setBounds:bounds];
     if (!CGSizeEqualToSize(bounds.size, _pageSize)) {
+        if (!_setFromOutside) {
+            _pageSize = bounds.size;
+        }
         [self updateVisibalePages];
         [self setNeedsLayout];
     }
@@ -314,6 +323,9 @@ enum {
 {
     [super setFrame:frame];
     if (!CGSizeEqualToSize(frame.size, _pageSize)) {
+        if (!_setFromOutside) {
+            _pageSize = frame.size;
+        }
         [self updateVisibalePages];
         [self setNeedsLayout];
     }
@@ -415,9 +427,9 @@ enum {
     NSInteger extraPageToLoad = ceilf(CGRectGetWidth(self.bounds) / w);
 
     if (visiblePages != _visibleNumberOfViewsPerPage || extraPageToLoad != _extraPagesForLoopShow) {
+        [self collectReusableViews];
         _visibleNumberOfViewsPerPage = visiblePages;
         _extraPagesForLoopShow = extraPageToLoad;
-        [self collectReusableViews];
     }
     [self loadNeededPages];
 }
