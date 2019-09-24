@@ -57,12 +57,6 @@
     self.pageWidthSlider.maximumValue = self.view.bounds.size.width;
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-    // Return YES for supported orientations
-    return (interfaceOrientation != UIInterfaceOrientationPortraitUpsideDown);
-}
-
 #pragma mark - RSlideView Datasource
 
 - (NSInteger)RSlideViewNumberOfPages

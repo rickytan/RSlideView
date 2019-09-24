@@ -234,10 +234,10 @@ enum {
     self.pageControl.hidden = NO;
     [UIView animateWithDuration:animated ? 0.35 : 0
                      animations:^{
-                         self.pageControl.alpha = _pageControlHidden ? 0.f : 1.f;
+                         self.pageControl.alpha = self->_pageControlHidden ? 0.f : 1.f;
                      }
                      completion:^(BOOL finished) {
-                         self.pageControl.hidden = _pageControlHidden;
+                         self.pageControl.hidden = self->_pageControlHidden;
                      }];
 }
 
