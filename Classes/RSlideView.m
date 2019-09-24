@@ -24,23 +24,23 @@ enum {
 @property (nonatomic, strong) RPageControl *pageControl;
 @property (nonatomic, strong) UIScrollView *scrollView;
 @property (nonatomic, assign) BOOL shouldLoad;
-
-- (void)loadNeededPages;
-- (void)loadViewOfPageAtIndex:(NSInteger)index;
-- (void)collectReusableViews;
-- (void)clearUpandMakeReusableAtIndex:(NSInteger)index;
-- (void)adjustScrollViewOffsetToSinglePage;
-- (void)updateVisibalePages;
-- (void)updateContentSize;
-
-- (void)tapGestureHandler:(UITapGestureRecognizer*)tap;
-
-- (void)didReceiveMemoryWarning:(NSNotification*)notification;
 @end
 
 @implementation RSlideView
 {
-    BOOL        _setFromOutside;
+    NSInteger                   _totalPages;
+    NSInteger                   _currentPage;
+    
+    NSInteger                   _visibleNumberOfViewsPerPage;   // Should always be a odd number
+    NSInteger                   _extraPagesForLoopShow;
+    
+    BOOL                        _allowScrollToPage;
+    
+    
+    NSMutableArray <__kindof UIView *>  *_reusableViews;
+    
+    NSInteger                   _selectedPageIndex;
+    BOOL                        _setFromOutside;
 }
 
 - (void)dealloc
@@ -210,6 +210,11 @@ enum {
     if (!_scrollView) {
         _scrollView = [[RScrollView alloc] initWithFrame:self.bounds];
         _scrollView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+        if (@available(iOS 11.0, *)) {
+            _scrollView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
+        } else {
+            // Fallback on earlier versions
+        }
         _scrollView.pagingEnabled = YES;
         _scrollView.scrollEnabled = YES;
         _scrollView.scrollsToTop = NO;

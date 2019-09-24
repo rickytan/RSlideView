@@ -73,20 +73,7 @@ IB_DESIGNABLE
 <UIScrollViewDelegate,
 RPageControlDataSource,
 RPageControlDelegate,
-UIGestureRecognizerDelegate> {
-    NSInteger                   _totalPages;
-    NSInteger                   _currentPage;
-    
-    NSInteger                   _visibleNumberOfViewsPerPage;   // Should always be a odd number
-    NSInteger                   _extraPagesForLoopShow;
-    
-    BOOL                        _allowScrollToPage;
-
-    
-    NSMutableArray             *_reusableViews;
-    
-    NSInteger                   _selectedPageIndex;
-}
+UIGestureRecognizerDelegate>
 
 @property (nonatomic, weak) IBOutlet id<RSlideViewDelegate> delegate;
 @property (nonatomic, weak) IBOutlet id<RSlideViewDataSource> dataSource;
